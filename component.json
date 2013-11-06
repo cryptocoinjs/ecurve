@@ -1,0 +1,15 @@
+{
+  "name": "cryptocoin-ecc",
+  "version": "0.0.0",
+  "description": "Eliptical Curve Cryptography",
+  "keywords": [],
+  "repo": "cryptocoinjs/address-btc",
+  "scripts": [
+    "./lib/address.js"
+  ],
+  "main": "./lib/address.js",
+  "dependencies": {
+    "cryptocoinjs/sha256": "0.0.x",
+    "cryptocoinjs/base58": "0.0.x"
+  }
+}
