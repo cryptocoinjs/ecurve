@@ -1,8 +1,15 @@
 {
   "name": "cryptocoin-ecc",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Eliptical Curve Cryptography",
-  "keywords": [],
+  "keywords": [
+    "cryptography",
+    "crypto",
+    "bitcoin",
+    "litecoin",
+    "eliptical",
+    "curve"
+  ],
   "ignore": [
     "node_modules",
     ".DS_Store",
@@ -10,9 +17,8 @@
     "package.json"
   ],
   "dependencies": {
-    "cryptocoin-sha256": "0.0.x",
-    "cryptocoin-base58": "0.0.x"
+    "cryptocoin-bigint": "0.0.x"
   },
-  "repo": "https://github.com/cryptocoinjs/address-btc",
-  "main": "./lib/address.js"
+  "repo": "https://github.com/cryptocoinjs/ecc",
+  "main": "./lib/ecc.js"
 }
