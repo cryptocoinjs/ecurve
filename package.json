@@ -18,8 +18,8 @@
     "url": "https://github.com/cryptocoinjs/ecurve",
     "type": "git"
   },
-  "main": "./lib/ecc.js",
+  "main": "./lib/ecurve.js",
   "dependencies": {
-    "cryptocoin-bigint": "0.0.x"
+    "cryptocoin-bigint": "0.1.x"
   }
 }

@@ -12,10 +12,10 @@
   ],
   "repo": "cryptocoinjs/ecurve",
   "scripts": [
-    "./lib/ecc.js"
+    "./lib/ecurve.js"
   ],
-  "main": "./lib/ecc.js",
+  "main": "./lib/ecurve.js",
   "dependencies": {
-    "cryptocoinjs/bigint": "0.0.x"
+    "cryptocoinjs/bigint": "0.1.x"
   }
 }
