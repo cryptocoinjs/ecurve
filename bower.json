@@ -1,7 +1,7 @@
 {
   "name": "cryptocoin-ecc",
   "version": "0.0.1",
-  "description": "Eliptical Curve Cryptography",
+  "description": "Elliptic curve cryptography",
   "keywords": [
     "cryptography",
     "crypto",
@@ -19,6 +19,6 @@
   "dependencies": {
     "cryptocoin-bigint": "0.0.x"
   },
-  "repo": "https://github.com/cryptocoinjs/ecc",
+  "repo": "https://github.com/cryptocoinjs/ecurve",
   "main": "./lib/ecc.js"
 }
