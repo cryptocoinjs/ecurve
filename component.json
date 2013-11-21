@@ -1,5 +1,5 @@
 {
-  "name": "cryptocoin-ecc",
+  "name": "ecurve",
   "version": "0.0.1",
   "description": "Elliptic curve cryptography",
   "keywords": [
