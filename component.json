@@ -1,6 +1,6 @@
 {
   "name": "ecurve",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Elliptic curve cryptography",
   "keywords": [
     "cryptography",
