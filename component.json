@@ -16,6 +16,6 @@
   ],
   "main": "./lib/ecurve.js",
   "dependencies": {
-    "cryptocoinjs/bigint": "0.1.x"
+    "cryptocoinjs/bigi": "0.2.x"
   }
 }
