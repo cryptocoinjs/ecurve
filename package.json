@@ -19,6 +19,9 @@
     "type": "git"
   },
   "main": "./lib/ecurve.js",
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "bigi": "0.2.x"
   }
