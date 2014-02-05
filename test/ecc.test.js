@@ -109,6 +109,7 @@ describe('Ecurve', function() {
       assert.equal(a.negate().toString(), '(5,8)'); // -(5,3) = (5,8)
       assert.equal(b.negate().toString(), '(9,1)'); // -(9,10) = (9,1)
       //assert.equal(inf.negate().toString(), '(INFINITY)'); // FAILS: can't negate infinity point; should fail out gracefully
+      assert.equal(z.negate().toString(), '(0,0)'); // -(0,0) = (0,0)
     });
     it('should add field elements properly', function() {
       assert.equal(a.add(b).toString(), '(9,1)');  // (5,3) + (9,10) = (9,1)
@@ -133,13 +134,24 @@ describe('Ecurve', function() {
       assert.equal(inf.multiply(new BigInteger('2')).toString(), '(INFINITY)'); // INFINITY x 2 = INFINITY
       assert.equal(inf.multiply(new BigInteger('3')).toString(), '(INFINITY)'); // INFINITY x 3 = INFINITY
       assert.equal(inf.multiply(new BigInteger('4')).toString(), '(INFINITY)'); // INFINITY x 4 = INFINITY
-      assert.equal(inf.multiply(new BigInteger('5')).toString(), '(INFINITY)'); // INFINITY x 2 = INFINITY
+      assert.equal(inf.multiply(new BigInteger('5')).toString(), '(INFINITY)'); // INFINITY x 5 = INFINITY
+      
+      assert.equal(z.multiply(new BigInteger('2')).toString(), '(INFINITY)'); // (0,0) x 2 = INFINITY
+      assert.equal(z.multiply(new BigInteger('3')).toString(), '(0,0)');      // (0,0) x 3 = (0,0)
+      assert.equal(z.multiply(new BigInteger('4')).toString(), '(INFINITY)'); // (0,0) x 4 = INFINITY
+      assert.equal(z.multiply(new BigInteger('5')).toString(), '(0,0)');      // (0,0) x 5 = (0,0)
       
       assert.equal(a.multiplyTwo(new BigInteger('4'), b, new BigInteger('4')).toString(), '(5,8)'); // (5,3) x 4 + (9,10) x 4 = (5,8)
       
       assert.equal(a.multiply(new BigInteger('2')).toString(), a.twice().toString()); // .multiply(2) == .twice()
       assert.equal(b.multiply(new BigInteger('2')).toString(), b.twice().toString());
       assert.equal(inf.multiply(new BigInteger('2')).toString(), inf.twice().toString());
+      assert.equal(z.multiply(new BigInteger('2')).toString(), z.twice().toString());
+
+      assert.equal(a.multiply(new BigInteger('2')).toString(), a.add(a).toString()); // this.multiply(2) == this.add(this)
+      assert.equal(b.multiply(new BigInteger('2')).toString(), b.add(b).toString());
+      assert.equal(inf.multiply(new BigInteger('2')).toString(), inf.add(inf).toString());
+      assert.equal(z.multiply(new BigInteger('2')).toString(), z.add(z).toString());
     });
   });
 });
