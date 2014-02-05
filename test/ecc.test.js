@@ -1,4 +1,4 @@
-var assert = require("assert");
+var assert = require('assert');
 var BigInteger = require('bigi');
 var ECCurveFp = require('../lib/ecurve');
 
