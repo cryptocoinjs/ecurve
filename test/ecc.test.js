@@ -53,21 +53,22 @@ describe('Ecurve', function() {
     // General Elliptic curve formula: y^2 = x^3 + ax + b
     // Testing field: y^2 = x^3 + x (a = 1, b = 0);
     // Wolfram Alpha: solve mod(y^2, 11)=mod(x^3+x, 11)
-    // As "q" is 11, which is an odd numbered prime, it's also the number of valid points in that curve (ten plus point at infinity):
-    //   (5,8), (7,8), (8,5), (9,10), (10,8)
-    //   (5,3), (7,3), (8,6), (9,1),  (10,3)
+    // There are 12 valid points on this curve (11 plus point at infinity)
+    //   (0,0), (5,8), (7,8), (8,5), (9,10), (10,8)
+    //          (5,3), (7,3), (8,6), (9,1),  (10,3)
     
-    // 10                         X
+    // 10                           X
     //  9
-    //  8             X     X        X
+    //  8               X     X        X
     //  7
-    //  6                      X
-    //  5                      X
+    //  6                        X
+    //  5                        X
     //  4
-    //  3             X     X        X
+    //  3               X     X        X
     //  2
-    //  1                         X
-    //    1  2  3  4  5  6  7  8  9 10
+    //  1                           X
+    //  0 X
+    //    0 1  2  3  4  5  6  7  8  9 10
     
     var inf = curve.getInfinity();
     var a = new ECCurveFp.ECPointFp(
@@ -94,8 +95,8 @@ describe('Ecurve', function() {
     it('should validate field elements properly', function() {
       assert.ok(a.validate());
       assert.ok(b.validate());
-      //assert.ok(!z.validate()); // FAILS: Throws an error instead of returning false
-      //assert.ok(!z.isOnCurve()); // FAILS: 0,0 should not be included in the curve, even though it satisfies the formula
+      //assert.ok(z.validate()); // FAILS: claims 0,0 is out of bounds, which is not true; 0,0 is a valid curve point
+      assert.ok(z.isOnCurve());
       assert.ok(!y.isOnCurve());
       //assert.ok(!y.validate()); // FAILS: Throws an error instead of returning false
       assert.ok(!a.isInfinity());
@@ -107,13 +108,13 @@ describe('Ecurve', function() {
     it('should negate field elements properly', function() {
       assert.equal(a.negate().toString(), '(5,8)'); // -(5,3) = (5,8)
       assert.equal(b.negate().toString(), '(9,1)'); // -(9,10) = (9,1)
-      //assert.equal(inf.negate().toString(), '(INFINITY)'); // FAILS: can't negate infinity point?
+      //assert.equal(inf.negate().toString(), '(INFINITY)'); // FAILS: can't negate infinity point; should fail out gracefully
     });
     it('should add field elements properly', function() {
       assert.equal(a.add(b).toString(), '(9,1)');  // (5,3) + (9,10) = (9,1)
       assert.equal(b.add(a).toString(), '(9,1)');  // (9,10) + (5,3) = (9,1)
-      assert.equal(a.add(z).toString(), '(9,10)'); // (5,3) + (0,0) = (9,10)  <-- weird results; should error out if one of the operands isn't on the curve
-      assert.equal(a.add(y).toString(), '(8,1)');  // (5,3) + (1,1) = (8,1)  <-- weird results; should error out if one of the operands isn't on the curve
+      assert.equal(a.add(z).toString(), '(9,10)'); // (5,3) + (0,0) = (9,10)
+      assert.equal(a.add(y).toString(), '(8,1)');  // (5,3) + (1,1) = (8,1)  <-- weird result; should error out if one of the operands isn't on the curve
       
       assert.equal(a.add(inf).toString(), '(5,3)'); // (5,3) + INFINITY = (5,3)
       assert.equal(inf.add(a).toString(), '(5,3)'); // INFINITY + (5,3) = (5,3)
