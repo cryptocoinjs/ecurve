@@ -1,6 +1,7 @@
 Next Release
 ------------
 * Fixed point export format to adhere to SEC guidelines (Bug #2)
+* Removed AMD/Component support
 
 0.2.0 / 2013-12-08
 ------------------
