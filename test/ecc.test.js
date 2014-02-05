@@ -29,11 +29,13 @@ describe('Ecurve', function() {
     
     var d = new BigInteger('971761939728640320549601132085879836204587084162', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
     var Q = G.multiply(d);
+    assert.equal(arrayToHex(Q.getEncoded(true)), '0251b4496fecc406ed0e75a24a3c03206251419dc0');
     assert.ok(Q.getX().toBigInteger().equals(new BigInteger('466448783855397898016055842232266600516272889280', 10)));
     assert.ok(Q.getY().toBigInteger().equals(new BigInteger('1110706324081757720403272427311003102474457754220', 10)));
 
     var d = new BigInteger('399525573676508631577122671218044116107572676710', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 3.1.2
     var Q = G.multiply(d);
+    assert.equal(arrayToHex(Q.getEncoded(true)), '0349b41e0e9c0369c2328739d90f63d56707c6e5bc');
     assert.ok(Q.getX().toBigInteger().equals(new BigInteger('420773078745784176406965940076771545932416607676', 10)));
     assert.ok(Q.getY().toBigInteger().equals(new BigInteger('221937774842090227911893783570676792435918278531', 10)));
   });
