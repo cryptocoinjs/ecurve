@@ -1,34 +1,9 @@
 ecc
 ===
 
-JavaScript component to [Elliptical Curve Cryptography]().
+JavaScript component to Elliptical Curve Cryptography.
 
 See this article for more details: [bitcoin address](http://procbits.com/2013/08/27/generating-a-bitcoin-address-with-javascript).
-
-
-
-Install
--------
-
-### Node.js/Browserify
-
-    npm install --save ecurve
-
-### Component
-
-    component install cryptocoinjs/ecurve
-
-
-### Bower
-
-    bower install ecurve
-
-
-### Script
-
-```html
-<script src="/path/to/ecurve.js"></script>
-```
 
 
 Usage
