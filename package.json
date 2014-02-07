@@ -22,6 +22,6 @@
     "test": "mocha"
   },
   "dependencies": {
-    "bigi": "0.2.x"
+    "math-buffer": "0.1.x"
   }
 }
