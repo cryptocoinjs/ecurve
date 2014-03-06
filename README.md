@@ -1,7 +1,7 @@
-ecc
-===
+ecurve
+=======
 
-JavaScript component to Elliptical Curve Cryptography.
+JavaScript component to [Elliptic Curve Cryptography](http://en.wikipedia.org/wiki/Elliptic_curve_cryptography).
 
 See this article for more details: [bitcoin address](http://procbits.com/2013/08/27/generating-a-bitcoin-address-with-javascript).
 

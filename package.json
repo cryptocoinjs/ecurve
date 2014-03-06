@@ -11,7 +11,8 @@
     "curve"
   ],
   "devDependencies": {
-    "mocha": "1.*"
+    "mocha": "1.*",
+    "mochify": "~0.4.2"
   },
   "repository": {
     "url": "https://github.com/cryptocoinjs/ecurve",
