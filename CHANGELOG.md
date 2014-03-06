@@ -1,7 +1,8 @@
-Next Release
-------------
+0.3.0 / 2014-03-05
+------------------
 * Fixed point export format to adhere to SEC guidelines (Bug #2)
 * Removed AMD/Component support
+* added browser test
 
 0.2.0 / 2013-12-08
 ------------------
