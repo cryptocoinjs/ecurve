@@ -1,6 +1,8 @@
 var assert = require('assert');
+
 var BigInteger = require('bigi');
 var ECCurveFp = require('../lib/ecurve');
+var ECPointFp = ECCurveFp.ECPointFp;
 
 function fromHex(s) { return new BigInteger(s, 16); };
 function arrayToHex(a) { return a.map(function(i) { return ('00'+i.toString(16)).slice(-2); }).join(''); };
@@ -17,6 +19,7 @@ describe('Ecurve', function() {
     assert.equal(arrayToHex(curve.getA().toBigInteger().toByteArrayUnsigned()), 'ffffffffffffffffffffffffffffffff7ffffffc');
     assert.equal(arrayToHex(curve.getB().toBigInteger().toByteArrayUnsigned()), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
   });
+
   it('should calculate keys correctly for secp160r1', function() {
     // sect163k1: p = 2^160 - 2^31 - 1
     var q = fromHex('ffffffffffffffffffffffffffffffff7fffffff');
@@ -44,6 +47,7 @@ describe('Ecurve', function() {
     assert.ok(Q.getX().toBigInteger().equals(new BigInteger('420773078745784176406965940076771545932416607676', 10)));
     assert.ok(Q.getY().toBigInteger().equals(new BigInteger('221937774842090227911893783570676792435918278531', 10)));
   });
+
   describe('Field math', function() {
     var curve = new ECCurveFp(
       fromHex('0b'),
@@ -105,12 +109,14 @@ describe('Ecurve', function() {
       assert.ok(inf.isOnCurve());
       //assert.ok(inf.validate()); // FAILS: Throws an error instead of returning false
     });
+
     it('should negate field elements properly', function() {
       assert.equal(a.negate().toString(), '(5,8)'); // -(5,3) = (5,8)
       assert.equal(b.negate().toString(), '(9,1)'); // -(9,10) = (9,1)
       //assert.equal(inf.negate().toString(), '(INFINITY)'); // FAILS: can't negate infinity point; should fail out gracefully
       assert.equal(z.negate().toString(), '(0,0)'); // -(0,0) = (0,0)
     });
+
     it('should add field elements properly', function() {
       assert.equal(a.add(b).toString(), '(9,1)');  // (5,3) + (9,10) = (9,1)
       assert.equal(b.add(a).toString(), '(9,1)');  // (9,10) + (5,3) = (9,1)
@@ -120,6 +126,7 @@ describe('Ecurve', function() {
       assert.equal(a.add(inf).toString(), '(5,3)'); // (5,3) + INFINITY = (5,3)
       assert.equal(inf.add(a).toString(), '(5,3)'); // INFINITY + (5,3) = (5,3)
     });
+
     it('should multiply field elements properly', function() {
       assert.equal(a.multiply(new BigInteger('2')).toString(), '(5,8)');      // (5,3) x 2 = (5,8)
       assert.equal(a.multiply(new BigInteger('3')).toString(), '(INFINITY)'); // (5,3) x 3 = INFINITY
@@ -155,3 +162,11 @@ describe('Ecurve', function() {
     });
   });
 });
+
+describe('ECPointFp', function() {
+  describe('+ decodeFrom', function() {
+    it('should be an static (class) method', function() {
+      assert.equal(typeof ECPointFp.decodeFrom, 'function');
+    })
+  })
+})

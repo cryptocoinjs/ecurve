@@ -1,3 +1,8 @@
+0.3.1 / 2014-03-13
+------------------
+* bug fix: `ECPointFp.decodeFrom` was incorrectly moved to `ECPointFp.prototype`
+
+
 0.3.0 / 2014-03-05
 ------------------
 * Fixed point export format to adhere to SEC guidelines (Bug #2)
