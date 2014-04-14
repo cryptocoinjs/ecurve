@@ -1,3 +1,7 @@
+0.3.2 / 2014-04-14
+------------------
+* bugfix: `decodeFrom` works with compressed keys, #8
+
 0.3.1 / 2014-03-13
 ------------------
 * bug fix: `ECPointFp.decodeFrom` was incorrectly moved to `ECPointFp.prototype`
