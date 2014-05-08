@@ -3,15 +3,40 @@ var BigMath = require('math-buffer');
 var ECCurveFp = require('../lib/ecurve');
 
 function fromHex(s) {
-  var buf =  new Buffer(s, 'hex');
-  // Now reverse the bytes to make it little-endian:
-  var out = new Buffer(buf.length);
-  for (var i = 0; i < buf.length; i++) {
-    out[i] = buf[buf.length-i];
-  }
-  return out;
+  return flipBuf(new Buffer(s, 'hex'));
 };
 function arrayToHex(a) { return a.map(function(i) { return ('00'+i.toString(16)).slice(-2); }).join(''); };
+function LEhex(buf) {
+  return flipBuf(buf).toString('hex');
+}  
+function flipBuf(buf) {
+  var out = new Buffer(buf.length);
+  for (var i = 0; i < buf.length; i++) {
+    out[i] = buf[buf.length-i-1];
+  }
+  return out;
+}
+function fromDec(s) {
+  var numDigits = s.length;
+  var TEN = BigMath.fromInt(10);
+  var out = BigMath.fromInt(0);
+  for (var i = 0; i < numDigits; i++) {
+    var value = parseInt(s[i]);
+    var power = numDigits-i-1;
+    var num = BigMath.fromInt(value);
+    for (var j = 0; j < power; j++) {
+      num = BigMath.multiply(num, TEN);
+    }
+    out = BigMath.add(out, num);
+  }
+  // Trim off zeroes
+  for (var i = out.length; i >= 0; i--) {
+    if (out[i] > 0) {
+      return out.slice(0, i+1);
+    }
+  }
+  return out.slice(0,1);
+}
 
 describe('Ecurve', function() {
   it('should create curve objects', function() {
@@ -21,11 +46,10 @@ describe('Ecurve', function() {
     var b = fromHex('1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
     var curve = new ECCurveFp(q, a, b);
     assert.ok(curve);
-    assert.equal(curve.getQ().toString('hex'), 'ffffffffffffffffffffffffffffffff7fffffff');
-    assert.equal(curve.getA().toBigInteger().toString('hex'), 'ffffffffffffffffffffffffffffffff7ffffffc');
-    assert.equal(curve.getB().toBigInteger().toString('hex'), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
+    assert.equal(LEhex(curve.getQ()), 'ffffffffffffffffffffffffffffffff7fffffff');
+    assert.equal(LEhex(curve.getA().toBigInteger()), 'ffffffffffffffffffffffffffffffff7ffffffc');
+    assert.equal(LEhex(curve.getB().toBigInteger()), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
   });
-  /*
   it('should calculate keys correctly for secp160r1', function() {
     // sect163k1: p = 2^160 - 2^31 - 1
     var q = fromHex('ffffffffffffffffffffffffffffffff7fffffff');
@@ -36,22 +60,24 @@ describe('Ecurve', function() {
       + '4A96B5688EF573284664698968C38BB913CBFC82'
       + '23A628553168947D59DCC912042351377AC5FB32'); // ECPointFp
     
-    var d = new BigInteger('971761939728640320549601132085879836204587084162', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
+    var d = fromDec('971761939728640320549601132085879836204587084162'); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
+    assert.equal(LEhex(d), 'aa374ffc3ce144e6b073307972cb6d57b2a4e982');
+    
     var Q = G.multiply(d);
     assert.equal(arrayToHex(Q.getEncoded(true)), '0251b4496fecc406ed0e75a24a3c03206251419dc0');
-    assert.ok(Q.getX().toBigInteger().equals(new BigInteger('466448783855397898016055842232266600516272889280', 10)));
-    assert.ok(Q.getY().toBigInteger().equals(new BigInteger('1110706324081757720403272427311003102474457754220', 10)));
+    assert.ok(Q.getX().toBigInteger().equals(fromDec('466448783855397898016055842232266600516272889280')));
+    assert.ok(Q.getY().toBigInteger().equals(fromDec('1110706324081757720403272427311003102474457754220')));
 
-    var d = new BigInteger('702232148019446860144825009548118511996283736794', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
+    var d = fromDec('702232148019446860144825009548118511996283736794'); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
     var k = G.multiply(d);
-    assert.ok(k.getX().toBigInteger().equals(new BigInteger('1176954224688105769566774212902092897866168635793', 10)));
-    assert.ok(k.getY().toBigInteger().equals(new BigInteger('1130322298812061698910820170565981471918861336822', 10)));
+    assert.ok(k.getX().toBigInteger().equals(fromDec('1176954224688105769566774212902092897866168635793')));
+    assert.ok(k.getY().toBigInteger().equals(fromDec('1130322298812061698910820170565981471918861336822')));
 
-    var d = new BigInteger('399525573676508631577122671218044116107572676710', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 3.1.2
+    var d = fromDec('399525573676508631577122671218044116107572676710'); // test vector from http://www.secg.org/collateral/gec2.pdf 3.1.2
     var Q = G.multiply(d);
     assert.equal(arrayToHex(Q.getEncoded(true)), '0349b41e0e9c0369c2328739d90f63d56707c6e5bc');
-    assert.ok(Q.getX().toBigInteger().equals(new BigInteger('420773078745784176406965940076771545932416607676', 10)));
-    assert.ok(Q.getY().toBigInteger().equals(new BigInteger('221937774842090227911893783570676792435918278531', 10)));
+    assert.ok(Q.getX().toBigInteger().equals(fromDec('420773078745784176406965940076771545932416607676')));
+    assert.ok(Q.getY().toBigInteger().equals(fromDec('221937774842090227911893783570676792435918278531')));
   });
   describe('Field math', function() {
     var curve = new ECCurveFp(
@@ -82,23 +108,23 @@ describe('Ecurve', function() {
     var inf = curve.getInfinity();
     var a = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('5')),
-      curve.fromBigInteger(new BigInteger('3'))
+      curve.fromBigInteger(BigMath.fromInt(5)),
+      curve.fromBigInteger(BigMath.fromInt(3))
     );
     var b = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('9')),
-      curve.fromBigInteger(new BigInteger('10'))
+      curve.fromBigInteger(BigMath.fromInt(9)),
+      curve.fromBigInteger(BigMath.fromInt(10))
     );
     var z = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('0')),
-      curve.fromBigInteger(new BigInteger('0'))
+      curve.fromBigInteger(BigMath.fromInt(0)),
+      curve.fromBigInteger(BigMath.fromInt(0))
     );
     var y = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('1')),
-      curve.fromBigInteger(new BigInteger('1'))
+      curve.fromBigInteger(BigMath.fromInt(1)),
+      curve.fromBigInteger(BigMath.fromInt(1))
     );
     
     it('should validate field elements properly', function() {
@@ -163,5 +189,4 @@ describe('Ecurve', function() {
       assert.equal(z.multiply(new BigInteger('2')).toString(), z.add(z).toString());
     });
   });
-  */
 });
