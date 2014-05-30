@@ -51,6 +51,19 @@ describe('ECPointFp', function() {
         //assert.equal(decoded.compressed, f.compressed) //TODO: maybed add this
       }) 
     })
+
+    fixtures.invalid.forEach(function(f) {
+      it('throws on ' + f.description, function() {
+        var curve = getCurve('secp256k1').getCurve()
+        var buffer = new Buffer(f.hex, 'hex')
+
+        var bytes = [].slice.call(buffer)
+
+        assert.throws(function() {
+          ECPointFp.decodeFrom(curve, bytes)
+        }, /Invalid sequence length|Invalid sequence tag/)
+      })
+    })
   })
 
   describe('- getEncoded()', function() {
