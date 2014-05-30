@@ -1,3 +1,7 @@
+x.y.z / 2014-0x-dd
+------------------
+* 
+
 0.4.0 / 2014-05-29
 ------------------
 * moved module `ecurve-names` into this module
