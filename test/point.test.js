@@ -5,7 +5,7 @@ var ECPointFp = ECCurveFp.ECPointFp
 var getCurve = ECCurveFp.getCurve
 var BigInteger = require('bigi')
 
-var fixtures = require('./point.fixtures')
+var fixtures = require('./fixtures/point')
 
 describe('ECPointFp', function() {
   describe('+ decodeFrom()', function() {
