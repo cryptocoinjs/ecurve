@@ -1,3 +1,13 @@
+0.4.0 / 2014-05-29
+------------------
+* moved module `ecurve-names` into this module
+* moved docs to cryptocoinjs.com
+* moved `ECFieldElementFp` to `field-element.js`
+* moved `ECPointFp` to `point.js`
+* moved `ECCurveFp` to `curve.js`
+* upgraded `bigi@0.2.x` to `bigi@^1.1.0`
+* added travis-ci and coveralls support 
+
 0.3.2 / 2014-04-14
 ------------------
 * bugfix: `decodeFrom` works with compressed keys, #8
