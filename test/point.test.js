@@ -28,7 +28,7 @@ describe('ECPointFp', function() {
       assert.equal(pubHex, new Buffer(pubPoint.getEncoded(false)).toString('hex'))
     });
 
-    it.skip('should work with compressed keys', function() {
+    it('should work with compressed keys', function() {
       var pubPoint = ECPointFp.decodeFrom(curve, pubKey);
       var pubKeyCompressed = pubPoint.getEncoded(true);
       var pubPointCompressed = ECPointFp.decodeFrom(curve, pubKeyCompressed);
