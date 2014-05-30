@@ -31,7 +31,8 @@ describe('Ecurve', function() {
     
     var d = new BigInteger('971761939728640320549601132085879836204587084162', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
     var Q = G.multiply(d);
-    assert.equal(new Buffer(Q.getEncoded(true)).toString('hex'), '0251b4496fecc406ed0e75a24a3c03206251419dc0');
+    console.log(Q.getEncoded(true).toString('hex'))
+    assert.equal(Q.getEncoded(true).toString('hex'), '0251b4496fecc406ed0e75a24a3c03206251419dc0');
     assert.ok(Q.getX().toBigInteger().equals(new BigInteger('466448783855397898016055842232266600516272889280', 10)));
     assert.ok(Q.getY().toBigInteger().equals(new BigInteger('1110706324081757720403272427311003102474457754220', 10)));
 

@@ -1,7 +1,8 @@
 x.y.z / 2014-0x-dd
 ------------------
 * added http://ci.testling.com support
-
+* changed `ECPointFP.decodeFrom()` to accept `Buffer` instead of `Array`. Thanks BitcoinJS devs :)
+* 
 
 0.4.0 / 2014-05-29
 ------------------
