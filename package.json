@@ -12,7 +12,7 @@
   ],
   "devDependencies": {
     "mocha": "^1.20.0",
-    "mochify": "~0.4.2",
+    "mochify": "^0.4.2",
     "terst": "~0.1.0",
     "coveralls": "^2.10.0",
     "mocha-lcov-reporter": "0.0.1",
@@ -24,11 +24,23 @@
   },
   "main": "./lib/ecurve.js",
   "scripts": {
+    "test": "mocha --ui bdd",
     "unit": "./node_modules/.bin/mocha",
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter list test/*.js",
     "coveralls": "npm run-script coverage && node ./node_modules/.bin/coveralls < coverage/lcov.info"
   },
   "dependencies": {
     "bigi": "^1.1.0"
+  },
+  "testling": {
+    "harness": "mocha",
+    "files": "test/*.js",
+    "browsers": [
+      "ie/9..latest",
+      "chrome/latest",
+      "firefox/latest",
+      "iphone/6..latest",
+      "android-browser/4.2..latest"
+    ]
   }
 }
