@@ -38,6 +38,7 @@
     "browsers": [
       "ie/9..latest",
       "chrome/latest",
+      "safari/6..latest",
       "firefox/latest",
       "iphone/6..latest",
       "android-browser/4.2..latest"
