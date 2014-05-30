@@ -5,12 +5,10 @@ var ECPointFp = ECCurveFp.ECPointFp
 var getCurve = ECCurveFp.getCurve
 var BigInteger = require('bigi')
 
-var fixtures = require('./fixtures')
-console.dir(fixtures)
-process.exit()
+var fixtures = require('./point.fixtures')
 
 describe('ECPointFp', function() {
-  describe('+ decodeFrom', function() {
+  describe('+ decodeFrom()', function() {
     it('should be an static (class) method', function() {
       assert.equal(typeof ECPointFp.decodeFrom, 'function');
     });
@@ -48,7 +46,7 @@ describe('ECPointFp', function() {
         var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(f.x)), curve.fromBigInteger(new BigInteger(f.y)))
 
         var encoded = Q.getEncoded(f.compressed)
-        assert.equal(encoded.toString('hex'), f.hex)
+        assert.equal(new Buffer(encoded).toString('hex'), f.hex)
       })
     })
   })
