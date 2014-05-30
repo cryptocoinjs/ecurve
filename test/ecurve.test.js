@@ -1,7 +1,7 @@
 var assert = require('assert');
 
 var BigInteger = require('bigi');
-var ECCurveFp = require('../lib/ecurve');
+var ECCurveFp = require('../');
 var ECPointFp = ECCurveFp.ECPointFp;
 
 require('terst')

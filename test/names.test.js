@@ -1,5 +1,5 @@
-var getSECCurveByName = require('../lib/names')
 var BigInteger = require('bigi');
+var getSECCurveByName = require('../').getCurve
 
 require('terst')
 
