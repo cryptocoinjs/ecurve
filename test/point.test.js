@@ -37,6 +37,20 @@ describe('ECPointFp', function() {
       assert.equal(pubHexCompressed, new Buffer(pubKeyCompressed).toString('hex'));
 
     })
+
+    it('decodes the correct point', function() {
+      fixtures.valid.forEach(function(f) {
+        var curve = getCurve('secp256k1').getCurve()
+        var buffer = new Buffer(f.hex, 'hex')
+
+        var bytes = [].slice.call(buffer)
+
+        var decoded = ECPointFp.decodeFrom(curve, bytes)
+        assert.equal(decoded.getX().toBigInteger().toString(), f.x)
+        assert.equal(decoded.getY().toBigInteger().toString(), f.y)
+        //assert.equal(decoded.compressed, f.compressed) //TODO: maybed add this
+      }) 
+    })
   })
 
   describe('- getEncoded()', function() {
