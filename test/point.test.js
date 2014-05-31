@@ -169,4 +169,38 @@ describe('ECPointFp', function() {
       })
     })
   })
+
+  describe('- equals()', function() {
+    var p = BigInteger.fromHex("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F");
+    var a = BigInteger.ZERO;
+    var b = BigInteger.fromHex("07");
+    var n = BigInteger.fromHex("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141");
+    var curve = new ECCurveFp(p, a, b);
+
+    it('should return true when points are equal', function() {
+      var x1 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
+      var y1 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
+      var G1 = new ECPointFp(curve, curve.fromBigInteger(x1), curve.fromBigInteger(y1))
+
+      var x2 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
+      var y2 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
+      var G2 = new ECPointFp(curve, curve.fromBigInteger(x2), curve.fromBigInteger(y2))
+
+      T (G1.equals(G2))
+      T (G2.equals(G1))
+    })
+
+    it('should return false when points are not equal', function() {
+      var x1 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
+      var y1 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
+      var G1 = new ECPointFp(curve, curve.fromBigInteger(x1), curve.fromBigInteger(y1))
+
+      var x2 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F817FF")
+      var y2 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
+      var G2 = new ECPointFp(curve, curve.fromBigInteger(x2), curve.fromBigInteger(y2))
+
+      F (G1.equals(G2))
+      F (G2.equals(G1))
+    })
+  })
 })
