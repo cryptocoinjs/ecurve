@@ -1,12 +1,12 @@
 var BigInteger = require('bigi');
-var getSECCurveByName = require('../').getECParams
+var getECParams = require('../').getECParams
 
 require('terst')
 
-describe('+ getSECCurveByName(curveName)', function() {
+describe('+ getECParams(curveName)', function() {
   describe('> when the bitcoin curve is passed', function() {
     it('should return the proper curve', function() {
-      var curve = getSECCurveByName('secp256k1');
+      var curve = getECParams('secp256k1');
       T (curve);
       EQ (curve.getCurve().getQ().toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f');
       T (curve.getCurve().getA().toBigInteger().equals(BigInteger.ZERO));
