@@ -162,5 +162,37 @@ describe('Ecurve', function() {
       assert.equal(z.multiply(new BigInteger('2')).toString(), z.add(z).toString());
     });
   });
+
+  describe('- equals', function() {
+    it('should return true when equal', function() {
+      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF");
+      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve1 = new ECCurveFp(p1, a1, b1);
+
+      var p2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF");
+      var a2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b2 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve2 = new ECCurveFp(p2, a2, b2);
+
+      T (curve1.equals(curve2))
+      T (curve2.equals(curve1))
+    })
+
+    it.skip('should return false when not equal', function() {
+      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF");
+      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve1 = new ECCurveFp(p1, a1, b1);
+
+      var p2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFAA");
+      var a2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b2 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve2 = new ECCurveFp(p2, a2, b2);
+
+      F (curve1.equals(curve2))
+      F (curve2.equals(curve1))
+    })
+  })
 });
 
