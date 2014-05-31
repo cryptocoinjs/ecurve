@@ -26,6 +26,14 @@ var G = new ECPointFp(curve, curve.fromBigInteger(x), curve.fromBigInteger(y));
 * deleted file `util.js` which contained `integerToBytes(bigInt, sizeInBytes)`, new
 way: `[].slice.call(bigInt.toBuffer(sizeInBytes))`
 * removed unused methods: `ECPointFp.prototype.add2D`, `ECPointFp.prototype.twice2D`, and `ECPointFp.prototype.multiply2D`
+* renamed `getCurve()` to `getECParams()` to alleviate confusion:
+
+New way:
+
+```js
+var ecurve = require('ecurve')
+var ecparams = ecurve.getECParams('secp256k1')
+```
 
 
 0.4.0 / 2014-05-29

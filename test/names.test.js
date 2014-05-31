@@ -1,5 +1,5 @@
 var BigInteger = require('bigi');
-var getSECCurveByName = require('../').getCurve
+var getSECCurveByName = require('../').getECParams
 
 require('terst')
 
