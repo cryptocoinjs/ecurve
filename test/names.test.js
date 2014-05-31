@@ -8,22 +8,22 @@ var curves = ['secp128r1', 'secp160k1', 'secp160r1', 'secp192k1', 'secp192r1', '
 describe('+ getECParams(curveName)', function() {
   describe('> when the bitcoin curve is passed', function() {
     it('should return the proper curve', function() {
-      var curve = getECParams('secp256k1');
-      T (curve);
-      EQ (curve.getCurve().getQ().toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f');
-      T (curve.getCurve().getA().toBigInteger().equals(BigInteger.ZERO));
-      EQ (curve.getCurve().getB().toBigInteger().toBuffer().toString('hex'), '07');
-      EQ (new Buffer(curve.getG().getEncoded(false)).toString('hex'), '0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8');
-      EQ (curve.getN().toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141');
-      EQ (curve.getH().toBuffer().toString('hex'), '01');
+      var ecparams = getECParams('secp256k1');
+      T (ecparams);
+      EQ (ecparams.curve.getQ().toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f');
+      T (ecparams.curve.getA().toBigInteger().equals(BigInteger.ZERO));
+      EQ (ecparams.curve.getB().toBigInteger().toBuffer().toString('hex'), '07');
+      EQ (new Buffer(ecparams.G.getEncoded(false)).toString('hex'), '0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8');
+      EQ (ecparams.N.toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141');
+      EQ (ecparams.H.toBuffer().toString('hex'), '01');
     });
   });
 
   curves.forEach(function(c) {
     describe('> when ' + c, function() {
       it('should return the curve', function() {
-        var curve = getECParams(c)
-        T (curve)
+        var ecparams = getECParams(c)
+        T (ecparams)
       })
     })
   })

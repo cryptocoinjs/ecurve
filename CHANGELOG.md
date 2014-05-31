@@ -35,6 +35,8 @@ var ecurve = require('ecurve')
 var ecparams = ecurve.getECParams('secp256k1')
 ```
 
+* renamed result `ecparams` [names.js] object methods `getN()`, `getH()`, `getG()`, and `getCurve()` to properties `N`, `H`, `G`, `curve`. This isn't
+Java. JavaScript has excellent property support through `Object.defineProperty`. 
 
 0.4.0 / 2014-05-29
 ------------------

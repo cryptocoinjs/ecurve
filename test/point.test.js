@@ -42,7 +42,7 @@ describe('ECPointFp', function() {
 
     it('decodes the correct point', function() {
       fixtures.valid.forEach(function(f) {
-        var curve = getECParams('secp256k1').getCurve()
+        var curve = getECParams('secp256k1').curve
         var buffer = new Buffer(f.hex, 'hex')
 
         var decoded = ECPointFp.decodeFrom(curve, buffer)
@@ -54,7 +54,7 @@ describe('ECPointFp', function() {
 
     fixtures.invalid.forEach(function(f) {
       it('throws on ' + f.description, function() {
-        var curve = getECParams('secp256k1').getCurve()
+        var curve = getECParams('secp256k1').curve
         var buffer = new Buffer(f.hex, 'hex')
 
         assert.throws(function() {
@@ -67,7 +67,7 @@ describe('ECPointFp', function() {
   describe('- getEncoded()', function() {
     it('should properly get the encoded version', function() {
       fixtures.valid.forEach(function(f) {
-        var curve = getECParams('secp256k1').getCurve()
+        var curve = getECParams('secp256k1').curve
         var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(f.x)), curve.fromBigInteger(new BigInteger(f.y)))
 
         var encoded = Q.getEncoded(f.compressed)
@@ -81,7 +81,7 @@ describe('ECPointFp', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
           var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
-          var curve = getECParams('secp256k1').getCurve()
+          var curve = getECParams('secp256k1').curve
           var doCompress = false
 
           var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
@@ -96,7 +96,7 @@ describe('ECPointFp', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
           var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
-          var curve = getECParams('secp256k1').getCurve()
+          var curve = getECParams('secp256k1').curve
           var doCompress = true
 
           var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
@@ -113,7 +113,7 @@ describe('ECPointFp', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
           var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
-          var curve = getECParams('secp256k1').getCurve()
+          var curve = getECParams('secp256k1').curve
           var doCompress = false
 
           var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
@@ -128,7 +128,7 @@ describe('ECPointFp', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
           var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
-          var curve = getECParams('secp256k1').getCurve()
+          var curve = getECParams('secp256k1').curve
           var doCompress = true
 
           var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
@@ -145,7 +145,7 @@ describe('ECPointFp', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
           var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
-          var curve = getECParams('secp256k1').getCurve()
+          var curve = getECParams('secp256k1').curve
 
           var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
           Q.compressed = false
@@ -159,7 +159,7 @@ describe('ECPointFp', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
           var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
-          var curve = getECParams('secp256k1').getCurve()
+          var curve = getECParams('secp256k1').curve
 
           var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
           Q.compressed = true
