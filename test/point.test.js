@@ -1,9 +1,11 @@
 var assert = require('assert')
 
-var ECCurveFp = require('../')
-var ECPointFp = ECCurveFp.ECPointFp
-var getECParams = ECCurveFp.getECParams
 var BigInteger = require('bigi')
+
+var ecurve = require('../')
+var ECCurveFp = ecurve.ECCurveFp
+var ECPointFp = ecurve.ECPointFp
+var getECParams = ecurve.getECParams
 
 require('terst')
 
