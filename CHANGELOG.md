@@ -1,3 +1,7 @@
+0.6.0 / 2014-05-31
+------------------
+* broke compability to make module exporting more logical, so had to bump minor version. 
+
 0.5.0 / 2014-05-31
 ------------------
 * added http://ci.testling.com support
