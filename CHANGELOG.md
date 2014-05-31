@@ -23,6 +23,9 @@ var y = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47
 var G = new ECPointFp(curve, curve.fromBigInteger(x), curve.fromBigInteger(y));
 ```
 
+* deleted file `util.js` which contained `integerToBytes(bigInt, sizeInBytes)`, new
+way: `[].slice.call(bigInt.toBuffer(sizeInBytes))`
+
 
 0.4.0 / 2014-05-29
 ------------------

@@ -179,7 +179,7 @@ describe('Ecurve', function() {
       T (curve2.equals(curve1))
     })
 
-    it.skip('should return false when not equal', function() {
+    it('should return false when not equal', function() {
       var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF");
       var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
       var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
