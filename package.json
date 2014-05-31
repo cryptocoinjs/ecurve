@@ -22,7 +22,7 @@
     "url": "https://github.com/cryptocoinjs/ecurve",
     "type": "git"
   },
-  "main": "./lib/ecurve.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "mocha --ui bdd",
     "unit": "./node_modules/.bin/mocha",
