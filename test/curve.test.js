@@ -14,9 +14,9 @@ describe('Ecurve', function() {
     var b = BigInteger.fromHex('1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
     var curve = new ECCurveFp(q, a, b);
     
-    assert.equal(curve.getQ().toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7fffffff');
-    assert.equal(curve.getA().toBigInteger().toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7ffffffc');
-    assert.equal(curve.getB().toBigInteger().toBuffer().toString('hex'), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
+    assert.equal(curve.q.toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7fffffff');
+    assert.equal(curve.a.toBigInteger().toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7ffffffc');
+    assert.equal(curve.b.toBigInteger().toBuffer().toString('hex'), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
   });
 
   it('should calculate keys correctly for secp160r1', function() {
