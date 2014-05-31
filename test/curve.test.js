@@ -14,9 +14,9 @@ describe('Ecurve', function() {
     var b = BigInteger.fromHex('1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
     var curve = new ECCurveFp(q, a, b);
     
-    assert.equal(curve.getQ().toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7fffffff');
-    assert.equal(curve.getA().toBigInteger().toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7ffffffc');
-    assert.equal(curve.getB().toBigInteger().toBuffer().toString('hex'), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
+    assert.equal(curve.q.toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7fffffff');
+    assert.equal(curve.a.toBigInteger().toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7ffffffc');
+    assert.equal(curve.b.toBigInteger().toBuffer().toString('hex'), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
   });
 
   it('should calculate keys correctly for secp160r1', function() {
@@ -25,13 +25,15 @@ describe('Ecurve', function() {
     var a = BigInteger.fromHex('ffffffffffffffffffffffffffffffff7ffffffc');
     var b = BigInteger.fromHex('1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
     var curve = new ECCurveFp(q, a, b);
-    var G = curve.decodePointHex('04'
-      + '4A96B5688EF573284664698968C38BB913CBFC82'
-      + '23A628553168947D59DCC912042351377AC5FB32'); // ECPointFp
+    var x = BigInteger.fromHex('4A96B5688EF573284664698968C38BB913CBFC82')
+    var y = BigInteger.fromHex('23A628553168947D59DCC912042351377AC5FB32')
+    var G = new ECPointFp(curve, curve.fromBigInteger(x), curve.fromBigInteger(y))
+
     
     var d = new BigInteger('971761939728640320549601132085879836204587084162', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
     var Q = G.multiply(d);
-    assert.equal(new Buffer(Q.getEncoded(true)).toString('hex'), '0251b4496fecc406ed0e75a24a3c03206251419dc0');
+
+    assert.equal(Q.getEncoded(true).toString('hex'), '0251b4496fecc406ed0e75a24a3c03206251419dc0');
     assert.ok(Q.getX().toBigInteger().equals(new BigInteger('466448783855397898016055842232266600516272889280', 10)));
     assert.ok(Q.getY().toBigInteger().equals(new BigInteger('1110706324081757720403272427311003102474457754220', 10)));
 
@@ -160,37 +162,37 @@ describe('Ecurve', function() {
       assert.equal(z.multiply(new BigInteger('2')).toString(), z.add(z).toString());
     });
   });
+
+  describe('- equals', function() {
+    it('should return true when equal', function() {
+      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF");
+      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve1 = new ECCurveFp(p1, a1, b1);
+
+      var p2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF");
+      var a2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b2 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve2 = new ECCurveFp(p2, a2, b2);
+
+      T (curve1.equals(curve2))
+      T (curve2.equals(curve1))
+    })
+
+    it('should return false when not equal', function() {
+      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF");
+      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve1 = new ECCurveFp(p1, a1, b1);
+
+      var p2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFAA");
+      var a2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC");
+      var b2 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3");
+      var curve2 = new ECCurveFp(p2, a2, b2);
+
+      F (curve1.equals(curve2))
+      F (curve2.equals(curve1))
+    })
+  })
 });
 
-describe('ECPointFp', function() {
-  describe('+ decodeFrom', function() {
-    it('should be an static (class) method', function() {
-      assert.equal(typeof ECPointFp.decodeFrom, 'function');
-    });
-
-    // secp256k1: p = 2^256 - 2^32 - 2^9 - 2^8 - 2^7 - 2^6 - 2^4 - 1
-    var p = BigInteger.fromHex('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F');
-    var a = BigInteger.ZERO;
-    var b = BigInteger.fromHex('07');
-    var curve = new ECCurveFp(p, a, b);
-    
-    var pubHex = '04d6d48c4a66a303856d9584a6ad49ce0965e9f0a5e4dcae878a3d017bd58ad7af3d0b920af7bd54626103848150f8b083edcba99d0a18f1035b6036da1500c6c0';
-    var pubKey = [].slice.call(new Buffer(pubHex, 'hex'));
-    var pubHexCompressed = '02d6d48c4a66a303856d9584a6ad49ce0965e9f0a5e4dcae878a3d017bd58ad7af';
-
-    it('should work with uncompressed keys', function(){
-      var pubPoint = ECPointFp.decodeFrom(curve, pubKey);
-      assert.equal(pubHex, new Buffer(pubPoint.getEncoded(false)).toString('hex'))
-    });
-
-    it('should work with compressed keys', function() {
-      var pubPoint = ECPointFp.decodeFrom(curve, pubKey);
-      var pubKeyCompressed = pubPoint.getEncoded(true);
-      var pubPointCompressed = ECPointFp.decodeFrom(curve, pubKeyCompressed);
-      assert.equal(pubHex, new Buffer(pubPointCompressed.getEncoded(false)).toString('hex'));
-      assert.equal(new Buffer(pubKeyCompressed).toString('hex'), new Buffer(pubPointCompressed.getEncoded(true)).toString('hex'));
-      assert.equal(pubHexCompressed, new Buffer(pubKeyCompressed).toString('hex'));
-
-    });
-  })
-})

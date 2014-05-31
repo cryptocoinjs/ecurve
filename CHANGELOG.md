@@ -1,3 +1,44 @@
+x.y.z / 2014-0x-dd
+------------------
+* added http://ci.testling.com support
+* changed `ECPointFP.decodeFrom()` to accept `Buffer` instead of `Array`. Thanks BitcoinJS devs :)
+* changed `ECPointFP.prototype.getEncoded()` to return a `Buffer` instead of an `Array`
+* added `compressed` property to instances of `ECPointFp`, set to `true` by default
+* `ECCurveFp.prototype.decodePointHex` removed. This change brings additonal clarity and removes untested (unused)
+portions of `decodePointHex`.
+
+Old way:
+
+```js
+var G = curve.decodePointHex("04"
+      + "79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"
+      + "483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8");
+```
+
+New way:
+
+```js
+var x = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
+var y = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
+var G = new ECPointFp(curve, curve.fromBigInteger(x), curve.fromBigInteger(y));
+```
+
+* deleted file `util.js` which contained `integerToBytes(bigInt, sizeInBytes)`, new
+way: `[].slice.call(bigInt.toBuffer(sizeInBytes))`
+* removed unused methods: `ECPointFp.prototype.add2D`, `ECPointFp.prototype.twice2D`, and `ECPointFp.prototype.multiply2D`
+* renamed `getCurve()` to `getECParams()` to alleviate confusion:
+
+New way:
+
+```js
+var ecurve = require('ecurve')
+var ecparams = ecurve.getECParams('secp256k1')
+```
+
+* renamed result `ecparams` [names.js] object methods `getN()`, `getH()`, `getG()`, and `getCurve()` to properties `n`, `h`, `g`, `curve`. This isn't
+Java. JavaScript has excellent property support through `Object.defineProperty`.
+* renamed `ECCurveFp` methods `getQ()`, `getA()`, and `getB()` to properties. See justfication in previous change. 
+
 0.4.0 / 2014-05-29
 ------------------
 * moved module `ecurve-names` into this module
