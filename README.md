@@ -7,7 +7,7 @@ ecurve
 [![browser support](https://ci.testling.com/cryptocoinjs/ecurve.png)](https://ci.testling.com/cryptocoinjs/ecurve)
 
 
-JavaScript component for [Elliptic Curve Cryptography](http://en.wikipedia.org/wiki/Elliptic_curve_cryptography).
+JavaScript component for [Elliptic Curve Cryptography](http://en.wikipedia.org/wiki/Elliptic_curve_cryptography). Works in both Node.js and the browser.
 
 Official documentation:
 
