@@ -5,6 +5,8 @@ var ECPointFp = ECCurveFp.ECPointFp
 var getCurve = ECCurveFp.getCurve
 var BigInteger = require('bigi')
 
+require('terst')
+
 var fixtures = require('./fixtures/point')
 
 describe('ECPointFp', function() {
@@ -70,6 +72,100 @@ describe('ECPointFp', function() {
 
         var encoded = Q.getEncoded(f.compressed)
         assert.equal(encoded.toString('hex'), f.hex)
+      })
+    })
+
+    describe('> when compressed flag is set to true', function() {
+      describe('> when false is passed', function() {
+        it('should return encoded (not compressed)', function() {
+          var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
+          var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
+          var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
+          var curve = getCurve('secp256k1').getCurve()
+          var doCompress = false
+
+          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          Q.compressed = true
+          var encoded = Q.getEncoded(doCompress)
+          EQ (encoded.toString('hex'), res)
+        })
+      })
+
+      describe('> when true is passed', function() {
+        it('should return encoded (not compressed)', function() {
+          var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
+          var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
+          var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+          var curve = getCurve('secp256k1').getCurve()
+          var doCompress = true
+
+          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          Q.compressed = true
+          var encoded = Q.getEncoded(doCompress)
+          EQ (encoded.toString('hex'), res)
+        })
+      })
+    })
+
+    describe('> when compressed flag is set to false', function() {
+      describe('> when false is passed', function() {
+        it('should return encoded (not compressed)', function() {
+          var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
+          var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
+          var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
+          var curve = getCurve('secp256k1').getCurve()
+          var doCompress = false
+
+          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          Q.compressed = false
+          var encoded = Q.getEncoded(doCompress)
+          EQ (encoded.toString('hex'), res)
+        })
+      })
+
+      describe('> when true is passed', function() {
+        it('should return encoded (not compressed)', function() {
+          var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
+          var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
+          var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+          var curve = getCurve('secp256k1').getCurve()
+          var doCompress = true
+
+          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          Q.compressed = false
+          var encoded = Q.getEncoded(doCompress)
+          EQ (encoded.toString('hex'), res)
+        })
+      })
+    })
+
+    describe('> when getEncoded() has no parameter', function() {
+      describe('> when compressed flag is set to false', function() {
+        it('should return encoded (not compressed)', function() {
+          var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
+          var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
+          var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
+          var curve = getCurve('secp256k1').getCurve()
+
+          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          Q.compressed = false
+          var encoded = Q.getEncoded()
+          EQ (encoded.toString('hex'), res)
+        })
+      })
+
+      describe('> when compressed flag is set to true', function() {
+        it('should return encoded (not compressed)', function() {
+          var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
+          var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
+          var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+          var curve = getCurve('secp256k1').getCurve()
+
+          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          Q.compressed = true
+          var encoded = Q.getEncoded()
+          EQ (encoded.toString('hex'), res)
+        })
       })
     })
   })
