@@ -3,6 +3,8 @@ var getECParams = require('../').getECParams
 
 require('terst')
 
+var curves = ['secp128r1']
+
 describe('+ getECParams(curveName)', function() {
   describe('> when the bitcoin curve is passed', function() {
     it('should return the proper curve', function() {
@@ -15,12 +17,23 @@ describe('+ getECParams(curveName)', function() {
       EQ (curve.getN().toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141');
       EQ (curve.getH().toBuffer().toString('hex'), '01');
     });
-    
-    it('should return null for unknown curves', function() {
-      EQ (getSECCurveByName('foobar'), null);
-    });
   });
-});
+
+  curves.forEach(function(c) {
+    describe('> when ' + c, function() {
+      it('should return the curve', function() {
+        var curve = getECParams(c)
+        T (curve)
+      })
+    })
+  })
+
+  describe('> when null is passed', function() {
+    it('should return null for unknown curves', function() {
+      EQ (getECParams('foobar'), null);
+    })
+  })
+})
 
 
 
