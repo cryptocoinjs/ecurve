@@ -4,6 +4,25 @@ x.y.z / 2014-0x-dd
 * changed `ECPointFP.decodeFrom()` to accept `Buffer` instead of `Array`. Thanks BitcoinJS devs :)
 * changed `ECPointFP.prototype.getEncoded()` to return a `Buffer` instead of an `Array`
 * added `compressed` property to instances of `ECPointFp`, set to `true` by default
+* `ECCurveFp.prototype.decodePointHex` removed. This change brings additonal clarity and removes untested (unused)
+portions of `decodePointHex`.
+
+Old way:
+
+```js
+var G = curve.decodePointHex("04"
+      + "79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"
+      + "483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8");
+```
+
+New way:
+
+```js
+var x = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
+var y = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
+var G = new ECPointFp(curve, curve.fromBigInteger(x), curve.fromBigInteger(y));
+```
+
 
 0.4.0 / 2014-05-29
 ------------------

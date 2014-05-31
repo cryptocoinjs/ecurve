@@ -25,9 +25,10 @@ describe('Ecurve', function() {
     var a = BigInteger.fromHex('ffffffffffffffffffffffffffffffff7ffffffc');
     var b = BigInteger.fromHex('1c97befc54bd7a8b65acf89f81d4d4adc565fa45');
     var curve = new ECCurveFp(q, a, b);
-    var G = curve.decodePointHex('04'
-      + '4A96B5688EF573284664698968C38BB913CBFC82'
-      + '23A628553168947D59DCC912042351377AC5FB32'); // ECPointFp
+    var x = BigInteger.fromHex('4A96B5688EF573284664698968C38BB913CBFC82')
+    var y = BigInteger.fromHex('23A628553168947D59DCC912042351377AC5FB32')
+    var G = new ECPointFp(curve, curve.fromBigInteger(x), curve.fromBigInteger(y))
+
     
     var d = new BigInteger('971761939728640320549601132085879836204587084162', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
     var Q = G.multiply(d);
