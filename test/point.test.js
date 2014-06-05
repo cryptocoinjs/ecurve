@@ -15,29 +15,24 @@ describe('ECPointFp', function() {
       assert.equal(typeof ECPointFp.decodeFrom, 'function')
     })
 
-    // secp256k1: p = 2^256 - 2^32 - 2^9 - 2^8 - 2^7 - 2^6 - 2^4 - 1
-    var p = BigInteger.fromHex('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F')
-    var a = BigInteger.ZERO
-    var b = BigInteger.fromHex('07')
-    var curve = new ECCurveFp(p, a, b)
-
     var pubHex = '04d6d48c4a66a303856d9584a6ad49ce0965e9f0a5e4dcae878a3d017bd58ad7af3d0b920af7bd54626103848150f8b083edcba99d0a18f1035b6036da1500c6c0'
     var pubKey = new Buffer(pubHex, 'hex')
     var pubHexCompressed = '02d6d48c4a66a303856d9584a6ad49ce0965e9f0a5e4dcae878a3d017bd58ad7af'
 
     it('should work with uncompressed keys', function(){
+      var curve = getECParams('secp256k1').curve
       var pubPoint = ECPointFp.decodeFrom(curve, pubKey)
-      assert.equal(pubHex, new Buffer(pubPoint.getEncoded(false)).toString('hex'))
+      assert.equal(pubHex, pubPoint.getEncoded(false).toString('hex'))
     })
 
     it('should work with compressed keys', function() {
+      var curve = getECParams('secp256k1').curve
       var pubPoint = ECPointFp.decodeFrom(curve, pubKey)
       var pubKeyCompressed = pubPoint.getEncoded(true)
       var pubPointCompressed = ECPointFp.decodeFrom(curve, pubKeyCompressed)
-      assert.equal(pubHex, new Buffer(pubPointCompressed.getEncoded(false)).toString('hex'))
-      assert.equal(new Buffer(pubKeyCompressed).toString('hex'), new Buffer(pubPointCompressed.getEncoded(true)).toString('hex'))
-      assert.equal(pubHexCompressed, new Buffer(pubKeyCompressed).toString('hex'))
-
+      assert.equal(pubHex, pubPointCompressed.getEncoded(false).toString('hex'))
+      assert.equal(pubKeyCompressed.toString('hex'), pubPointCompressed.getEncoded(true).toString('hex'))
+      assert.equal(pubHexCompressed, pubKeyCompressed.toString('hex'))
     })
 
     fixtures.valid.forEach(function(f) {
@@ -171,36 +166,32 @@ describe('ECPointFp', function() {
   })
 
   describe('- equals()', function() {
-    var p = BigInteger.fromHex("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F")
-    var a = BigInteger.ZERO
-    var b = BigInteger.fromHex("07")
-    var n = BigInteger.fromHex("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141")
-    var curve = new ECCurveFp(p, a, b)
+    var curve = getECParams('secp256k1').curve
 
     it('should return true when points are equal', function() {
-      var x1 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
-      var y1 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G1 = new ECPointFp(curve, curve.fromBigInteger(x1), curve.fromBigInteger(y1))
+      var x1 = BigInteger.fromHex("FFFF")
+      var y1 = BigInteger.fromHex("FFFF")
+      var P1 = new ECPointFp(curve, x1, y1)
 
-      var x2 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
-      var y2 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G2 = new ECPointFp(curve, curve.fromBigInteger(x2), curve.fromBigInteger(y2))
+      var x2 = x1.clone()
+      var y2 = y1.clone()
+      var P2 = new ECPointFp(curve, x2, y2)
 
-      assert(G1.equals(G2))
-      assert(G2.equals(G1))
+      assert(P1.equals(P2))
+      assert(P2.equals(P1))
     })
 
     it('should return false when points are noassertequal', function() {
-      var x1 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
-      var y1 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G1 = new ECPointFp(curve, curve.fromBigInteger(x1), curve.fromBigInteger(y1))
+      var x1 = BigInteger.fromHex("FFFF")
+      var y1 = BigInteger.fromHex("FFFF")
+      var P1 = new ECPointFp(curve, x1, y1)
 
-      var x2 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F817FF")
-      var y2 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G2 = new ECPointFp(curve, curve.fromBigInteger(x2), curve.fromBigInteger(y2))
+      var x2 = BigInteger.fromHex("AAAA")
+      var y2 = y1.clone()
+      var P2 = new ECPointFp(curve, x2, y2)
 
-      assert(!G1.equals(G2))
-      assert(!G2.equals(G1))
+      assert(!P1.equals(P2))
+      assert(!P2.equals(P1))
     })
   })
 })
