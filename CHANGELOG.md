@@ -5,7 +5,7 @@
 0.5.0 / 2014-05-31
 ------------------
 * added http://ci.testling.com support
-* changed `ECPointFP.decodeFrom()` to accept `Buffer` instead of `Array`. Thanks BitcoinJS devs :)
+* changed `ECPointFP.decodeFrom()` to accept `Buffer` instead of `Array`. Thanks BitcoinJS devs / [Daniel Cousens](https://github.com/dcousens) :)
 * changed `ECPointFP.prototype.getEncoded()` to return a `Buffer` instead of an `Array`
 * added `compressed` property to instances of `ECPointFp`, set to `true` by default
 * `ECCurveFp.prototype.decodePointHex` removed. This change brings additonal clarity and removes untested (unused)
