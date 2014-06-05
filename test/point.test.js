@@ -169,29 +169,29 @@ describe('ECPointFp', function() {
     var curve = getECParams('secp256k1').curve
 
     it('should return true when points are equal', function() {
-      var x1 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
-      var y1 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G1 = new ECPointFp(curve, curve.fromBigInteger(x1), curve.fromBigInteger(y1))
+      var x1 = BigInteger.fromHex("FFFF")
+      var y1 = BigInteger.fromHex("FFFF")
+      var P1 = new ECPointFp(curve, x1, y1)
 
-      var x2 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
-      var y2 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G2 = new ECPointFp(curve, curve.fromBigInteger(x2), curve.fromBigInteger(y2))
+      var x2 = x1.clone()
+      var y2 = y1.clone()
+      var P2 = new ECPointFp(curve, x2, y2)
 
-      assert(G1.equals(G2))
-      assert(G2.equals(G1))
+      assert(P1.equals(P2))
+      assert(P2.equals(P1))
     })
 
     it('should return false when points are noassertequal', function() {
-      var x1 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798")
-      var y1 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G1 = new ECPointFp(curve, curve.fromBigInteger(x1), curve.fromBigInteger(y1))
+      var x1 = BigInteger.fromHex("FFFF")
+      var y1 = BigInteger.fromHex("FFFF")
+      var P1 = new ECPointFp(curve, x1, y1)
 
-      var x2 = BigInteger.fromHex("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F817FF")
-      var y2 = BigInteger.fromHex("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8")
-      var G2 = new ECPointFp(curve, curve.fromBigInteger(x2), curve.fromBigInteger(y2))
+      var x2 = BigInteger.fromHex("AAAA")
+      var y2 = y1.clone()
+      var P2 = new ECPointFp(curve, x2, y2)
 
-      assert(!G1.equals(G2))
-      assert(!G2.equals(G1))
+      assert(!P1.equals(P2))
+      assert(!P2.equals(P1))
     })
   })
 })
