@@ -1,3 +1,9 @@
+0.7.0 / 2014-06-05
+------------------
+* major clean up by [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/9)
+* removed semicolons as per http://cryptocoinjs.com/about/contributing/
+* 
+
 0.6.0 / 2014-05-31
 ------------------
 * broke compability to make module exporting more logical, so had to bump minor version. 
