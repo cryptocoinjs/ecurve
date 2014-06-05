@@ -1,8 +1,12 @@
-0.7.0 / 2014-06-05
+0.7.0 / 2014-06-xx
 ------------------
 * major clean up by [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/9)
 * removed semicolons as per http://cryptocoinjs.com/about/contributing/
 * removed `terst` and replaced with Node.js `assert` as per http://cryptocoinjs.com/about/contributing/
+* more clean up by [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/10)
+* `ECCurveFp` field `q` renamed to `p` / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/10)
+* `ecparams` field `g` renamed to `G` / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/10)
+* `ECFieldElementFp` shown unnecessary (deleted) / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/11)
 
 0.6.0 / 2014-05-31
 ------------------
