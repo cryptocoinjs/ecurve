@@ -7,42 +7,34 @@ var ECPointFp = ecurve.ECPointFp
 
 describe('Ecurve', function() {
   it('should create curve objects', function() {
-    // secp160r1: p = 2^160 - 2^31 - 1
-    var q = BigInteger.fromHex('ffffffffffffffffffffffffffffffff7fffffff')
-    var a = BigInteger.fromHex('ffffffffffffffffffffffffffffffff7ffffffc')
-    var b = BigInteger.fromHex('1c97befc54bd7a8b65acf89f81d4d4adc565fa45')
-    var curve = new ECCurveFp(q, a, b)
+    var p = BigInteger.valueOf(11)
+    var a = BigInteger.valueOf(22)
+    var b = BigInteger.valueOf(33)
 
-    assert.equal(curve.q.toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7fffffff')
-    assert.equal(curve.a.toBigInteger().toBuffer().toString('hex'), 'ffffffffffffffffffffffffffffffff7ffffffc')
-    assert.equal(curve.b.toBigInteger().toBuffer().toString('hex'), '1c97befc54bd7a8b65acf89f81d4d4adc565fa45')
-  })
+    var curve = new ECCurveFp(p, a, b)
+    assert.equal(curve.p.toString(), '11')
+    assert.equal(curve.a.toBigInteger().toString(), '22')
+    assert.equal(curve.b.toBigInteger().toString(), '33')
+  });
 
   it('should calculate keys correctly for secp160r1', function() {
-    // sect163k1: p = 2^160 - 2^31 - 1
-    var q = BigInteger.fromHex('ffffffffffffffffffffffffffffffff7fffffff')
-    var a = BigInteger.fromHex('ffffffffffffffffffffffffffffffff7ffffffc')
-    var b = BigInteger.fromHex('1c97befc54bd7a8b65acf89f81d4d4adc565fa45')
-    var curve = new ECCurveFp(q, a, b)
-    var x = BigInteger.fromHex('4A96B5688EF573284664698968C38BB913CBFC82')
-    var y = BigInteger.fromHex('23A628553168947D59DCC912042351377AC5FB32')
-    var G = new ECPointFp(curve, curve.fromBigInteger(x), curve.fromBigInteger(y))
+    var params = ecurve.getECParams('secp160r1')
+    var curve = params.curve
 
-
-    var d = new BigInteger('971761939728640320549601132085879836204587084162', 10) // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
-    var Q = G.multiply(d)
+    var d = new BigInteger('971761939728640320549601132085879836204587084162', 10); // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
+    var Q = params.G.multiply(d)
 
     assert.equal(Q.getEncoded(true).toString('hex'), '0251b4496fecc406ed0e75a24a3c03206251419dc0')
     assert.ok(Q.getX().toBigInteger().equals(new BigInteger('466448783855397898016055842232266600516272889280', 10)))
     assert.ok(Q.getY().toBigInteger().equals(new BigInteger('1110706324081757720403272427311003102474457754220', 10)))
 
     var d = new BigInteger('702232148019446860144825009548118511996283736794', 10) // test vector from http://www.secg.org/collateral/gec2.pdf 2.1.2
-    var k = G.multiply(d)
+    var k = params.G.multiply(d)
     assert.ok(k.getX().toBigInteger().equals(new BigInteger('1176954224688105769566774212902092897866168635793', 10)))
     assert.ok(k.getY().toBigInteger().equals(new BigInteger('1130322298812061698910820170565981471918861336822', 10)))
 
     var d = new BigInteger('399525573676508631577122671218044116107572676710', 10) // test vector from http://www.secg.org/collateral/gec2.pdf 3.1.2
-    var Q = G.multiply(d)
+    var Q = params.G.multiply(d)
     assert.equal(new Buffer(Q.getEncoded(true)).toString('hex'), '0349b41e0e9c0369c2328739d90f63d56707c6e5bc')
     assert.ok(Q.getX().toBigInteger().equals(new BigInteger('420773078745784176406965940076771545932416607676', 10)))
     assert.ok(Q.getY().toBigInteger().equals(new BigInteger('221937774842090227911893783570676792435918278531', 10)))
