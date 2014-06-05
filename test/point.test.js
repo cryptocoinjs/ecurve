@@ -22,7 +22,7 @@ describe('ECPointFp', function() {
     it('should work with uncompressed keys', function(){
       var curve = getECParams('secp256k1').curve
       var pubPoint = ECPointFp.decodeFrom(curve, pubKey)
-      assert.equal(pubHex, new Buffer(pubPoint.getEncoded(false)).toString('hex'))
+      assert.equal(pubHex, pubPoint.getEncoded(false).toString('hex'))
     })
 
     it('should work with compressed keys', function() {
@@ -30,9 +30,9 @@ describe('ECPointFp', function() {
       var pubPoint = ECPointFp.decodeFrom(curve, pubKey)
       var pubKeyCompressed = pubPoint.getEncoded(true)
       var pubPointCompressed = ECPointFp.decodeFrom(curve, pubKeyCompressed)
-      assert.equal(pubHex, new Buffer(pubPointCompressed.getEncoded(false)).toString('hex'))
-      assert.equal(new Buffer(pubKeyCompressed).toString('hex'), new Buffer(pubPointCompressed.getEncoded(true)).toString('hex'))
-      assert.equal(pubHexCompressed, new Buffer(pubKeyCompressed).toString('hex'))
+      assert.equal(pubHex, pubPointCompressed.getEncoded(false).toString('hex'))
+      assert.equal(pubKeyCompressed.toString('hex'), pubPointCompressed.getEncoded(true).toString('hex'))
+      assert.equal(pubHexCompressed, pubKeyCompressed.toString('hex'))
     })
 
     fixtures.valid.forEach(function(f) {

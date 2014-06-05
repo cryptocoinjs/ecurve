@@ -13,7 +13,7 @@ describe('+ getECParams(curveName)', function() {
       assert.equal(ecparams.curve.p.toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f')
       assert(ecparams.curve.a.toBigInteger().equals(BigInteger.ZERO))
       assert.equal(ecparams.curve.b.toBigInteger().toBuffer().toString('hex'), '07')
-      assert.equal(new Buffer(ecparams.G.getEncoded(false)).toString('hex'), '0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8')
+      assert.equal(ecparams.G.getEncoded(false).toString('hex'), '0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8')
       assert.equal(ecparams.n.toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141')
       assert.equal(ecparams.h.toBuffer().toString('hex'), '01')
     })
