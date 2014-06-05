@@ -22,7 +22,7 @@ describe('ECPointFp', function() {
     var a = BigInteger.ZERO;
     var b = BigInteger.fromHex('07');
     var curve = new ECCurveFp(p, a, b);
-    
+
     var pubHex = '04d6d48c4a66a303856d9584a6ad49ce0965e9f0a5e4dcae878a3d017bd58ad7af3d0b920af7bd54626103848150f8b083edcba99d0a18f1035b6036da1500c6c0';
     var pubKey = new Buffer(pubHex, 'hex')
     var pubHexCompressed = '02d6d48c4a66a303856d9584a6ad49ce0965e9f0a5e4dcae878a3d017bd58ad7af';
@@ -42,16 +42,16 @@ describe('ECPointFp', function() {
 
     })
 
-    it('decodes the correct point', function() {
-      fixtures.valid.forEach(function(f) {
-        var curve = getECParams('secp256k1').curve
+    fixtures.valid.forEach(function(f) {
+      it('decodes ' + f.hex + ' correctly', function() {
+        var curve = getECParams(f.curve).curve
         var buffer = new Buffer(f.hex, 'hex')
 
         var decoded = ECPointFp.decodeFrom(curve, buffer)
         assert.equal(decoded.getX().toBigInteger().toString(), f.x)
         assert.equal(decoded.getY().toBigInteger().toString(), f.y)
-        //assert.equal(decoded.compressed, f.compressed) //TODO: maybed add this
-      }) 
+        assert.equal(decoded.compressed, f.compressed)
+      })
     })
 
     fixtures.invalid.forEach(function(f) {
@@ -67,9 +67,9 @@ describe('ECPointFp', function() {
   })
 
   describe('- getEncoded()', function() {
-    it('should properly get the encoded version', function() {
-      fixtures.valid.forEach(function(f) {
-        var curve = getECParams('secp256k1').curve
+    fixtures.valid.forEach(function(f) {
+      it('encode ' + f.hex + ' correctly', function() {
+        var curve = getECParams(f.curve).curve
         var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(f.x)), curve.fromBigInteger(new BigInteger(f.y)))
 
         var encoded = Q.getEncoded(f.compressed)
