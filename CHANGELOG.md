@@ -2,7 +2,7 @@
 ------------------
 * major clean up by [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/9)
 * removed semicolons as per http://cryptocoinjs.com/about/contributing/
-* 
+* removed `terst` and replaced with Node.js `assert` as per http://cryptocoinjs.com/about/contributing/
 
 0.6.0 / 2014-05-31
 ------------------

@@ -5,8 +5,6 @@ var ecurve = require('../')
 var ECCurveFp = ecurve.ECCurveFp
 var ECPointFp = ecurve.ECPointFp
 
-require('terst')
-
 describe('Ecurve', function() {
   it('should create curve objects', function() {
     // secp160r1: p = 2^160 - 2^31 - 1
@@ -176,8 +174,8 @@ describe('Ecurve', function() {
       var b2 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
       var curve2 = new ECCurveFp(p2, a2, b2)
 
-      T (curve1.equals(curve2))
-      T (curve2.equals(curve1))
+      assert(curve1.equals(curve2))
+      assert(curve2.equals(curve1))
     })
 
     it('should return false when not equal', function() {
@@ -191,8 +189,8 @@ describe('Ecurve', function() {
       var b2 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
       var curve2 = new ECCurveFp(p2, a2, b2)
 
-      F (curve1.equals(curve2))
-      F (curve2.equals(curve1))
+      assert(!curve1.equals(curve2))
+      assert(!curve2.equals(curve1))
     })
   })
 })
