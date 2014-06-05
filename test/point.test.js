@@ -41,8 +41,8 @@ describe('ECPointFp', function() {
         var buffer = new Buffer(f.hex, 'hex')
 
         var decoded = ECPointFp.decodeFrom(curve, buffer)
-        assert.equal(decoded.getX().toBigInteger().toString(), f.x)
-        assert.equal(decoded.getY().toBigInteger().toString(), f.y)
+        assert.equal(decoded.getX().toString(), f.x)
+        assert.equal(decoded.getY().toString(), f.y)
         assert.equal(decoded.compressed, f.compressed)
       })
     })
@@ -63,7 +63,7 @@ describe('ECPointFp', function() {
     fixtures.valid.forEach(function(f) {
       it('encode ' + f.hex + ' correctly', function() {
         var curve = getECParams(f.curve).curve
-        var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(f.x)), curve.fromBigInteger(new BigInteger(f.y)))
+        var Q = new ECPointFp(curve, new BigInteger(f.x), new BigInteger(f.y))
 
         var encoded = Q.getEncoded(f.compressed)
         assert.equal(encoded.toString('hex'), f.hex)
@@ -79,8 +79,9 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = false
 
-          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
+
           var encoded = Q.getEncoded(doCompress)
           assert.equal(encoded.toString('hex'), res)
         })
@@ -94,8 +95,9 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = true
 
-          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
+
           var encoded = Q.getEncoded(doCompress)
           assert.equal(encoded.toString('hex'), res)
         })
@@ -111,8 +113,9 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = false
 
-          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
+
           var encoded = Q.getEncoded(doCompress)
           assert.equal(encoded.toString('hex'), res)
         })
@@ -126,8 +129,9 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = true
 
-          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
+
           var encoded = Q.getEncoded(doCompress)
           assert.equal(encoded.toString('hex'), res)
         })
@@ -142,8 +146,9 @@ describe('ECPointFp', function() {
           var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
           var curve = getECParams('secp256k1').curve
 
-          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
+
           var encoded = Q.getEncoded()
           assert.equal(encoded.toString('hex'), res)
         })
@@ -156,8 +161,9 @@ describe('ECPointFp', function() {
           var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
           var curve = getECParams('secp256k1').curve
 
-          var Q = new ECPointFp(curve, curve.fromBigInteger(new BigInteger(x)), curve.fromBigInteger(new BigInteger(y)))
+          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
+
           var encoded = Q.getEncoded()
           assert.equal(encoded.toString('hex'), res)
         })

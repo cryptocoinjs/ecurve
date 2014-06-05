@@ -15,8 +15,8 @@ describe('Ecurve', function() {
 
     var curve = new ECCurveFp(p, a, b)
     assert.equal(curve.p.toString(), '11')
-    assert.equal(curve.a.toBigInteger().toString(), '22')
-    assert.equal(curve.b.toBigInteger().toString(), '33')
+    assert.equal(curve.a.toString(), '22')
+    assert.equal(curve.b.toString(), '33')
   });
 
   fixtures.valid.forEach(function(f) {
@@ -27,8 +27,8 @@ describe('Ecurve', function() {
       var d = new BigInteger(f.D)
       var Q = params.G.multiply(d)
 
-      assert.ok(Q.getX().toBigInteger().toString(), f.Q.x)
-      assert.ok(Q.getY().toBigInteger().toString(), f.Q.y)
+      assert.ok(Q.getX().toString(), f.Q.x)
+      assert.ok(Q.getY().toString(), f.Q.y)
     })
   })
 
@@ -61,23 +61,23 @@ describe('Ecurve', function() {
     var inf = curve.getInfinity()
     var a = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('5')),
-      curve.fromBigInteger(new BigInteger('3'))
+      new BigInteger('5'),
+      new BigInteger('3')
     )
     var b = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('9')),
-      curve.fromBigInteger(new BigInteger('10'))
+      new BigInteger('9'),
+      new BigInteger('10')
     )
     var z = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('0')),
-      curve.fromBigInteger(new BigInteger('0'))
+      new BigInteger('0'),
+      new BigInteger('0')
     )
     var y = new ECCurveFp.ECPointFp(
       curve,
-      curve.fromBigInteger(new BigInteger('1')),
-      curve.fromBigInteger(new BigInteger('1'))
+      new BigInteger('1'),
+      new BigInteger('1')
     )
 
     it('should validate field elements properly', function() {
