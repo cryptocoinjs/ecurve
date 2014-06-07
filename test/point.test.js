@@ -200,4 +200,62 @@ describe('ECPointFp', function() {
       assert(!P2.equals(P1))
     })
   })
+
+  describe('isOnCurve', function() {
+    var curve = getECParams('secp256k1').curve
+
+    it('should return true for a point on the curve', function() {
+      var d = BigInteger.ONE
+      var Q = curve.params.G.multiply(d)
+      assert.ok(Q.isOnCurve())
+    })
+
+    it('should return true for points at (0, 0) if they are on the curve', function() {
+      var curve = new ECCurveFp(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
+      var P = new ECPointFp(curve, BigInteger.ZERO, BigInteger.ZERO)
+      assert.ok(P.isOnCurve())
+    })
+
+    it('should return false for points not in the finite field', function() {
+      var P = new ECPointFp(curve, curve.p.add(BigInteger.ONE), BigInteger.ZERO)
+      assert(!P.isOnCurve())
+    })
+
+    it('should return false for a point not on the curve', function() {
+      var P = new ECPointFp(curve, BigInteger.ONE, BigInteger.ONE)
+      assert(!P.isOnCurve())
+    })
+  })
+
+  describe('validate', function() {
+    var curve = getECParams('secp256k1').curve
+
+    it('should validate a point on the curve', function() {
+      var d = BigInteger.ONE
+      var Q = curve.params.G.multiply(d)
+
+      assert.ok(Q.validate())
+    })
+
+    it('should not validate a point not on the curve', function() {
+      var P = new ECPointFp(curve, BigInteger.ONE, BigInteger.ONE)
+
+      assert.throws(function() {
+        P.validate()
+      }, /Point is not on the curve/)
+    })
+
+    it('should not validate the point at infinity', function() {
+      assert.throws(function() {
+        curve.getInfinity().validate()
+      }, /Point is at infinity/)
+    })
+
+    // TODO: Test data needed...
+//    it('should not validate a point not on the curve', function() {
+//      assert.throws(function() {
+//        Q.validate()
+//      }, /Point is not a scalar multiple of G/)
+//    })
+  })
 })
