@@ -33,18 +33,14 @@ describe('Ecurve', function() {
   })
 
   describe('Field math', function() {
-    var curve = new ECCurveFp(
-      BigInteger.fromHex('0b'),
-      BigInteger.fromHex('01'),
-      BigInteger.fromHex('00')
-    )
     // General Elliptic curve formula: y^2 = x^3 + ax + b
     // Testing field: y^2 = x^3 + x (a = 1, b = 0)
     // Wolfram Alpha: solve mod(y^2, 11)=mod(x^3+x, 11)
     // There are 12 valid points on this curve (11 plus point at infinity)
     //   (0,0), (5,8), (7,8), (8,5), (9,10), (10,8)
     //          (5,3), (7,3), (8,6), (9,1),  (10,3)
-
+    //
+    ///////////////////////////////////////////////
     // 10                           X
     //  9
     //  8               X     X        X
@@ -57,41 +53,51 @@ describe('Ecurve', function() {
     //  1                           X
     //  0 X
     //    0 1  2  3  4  5  6  7  8  9 10
+    ///////////////////////////////////////////////
 
-    var inf = curve.getInfinity()
-    var a = new ECCurveFp.ECPointFp(
-      curve,
-      new BigInteger('5'),
-      new BigInteger('3')
-    )
-    var b = new ECCurveFp.ECPointFp(
-      curve,
-      new BigInteger('9'),
-      new BigInteger('10')
-    )
-    var z = new ECCurveFp.ECPointFp(
-      curve,
-      new BigInteger('0'),
-      new BigInteger('0')
-    )
-    var y = new ECCurveFp.ECPointFp(
-      curve,
-      new BigInteger('1'),
-      new BigInteger('1')
-    )
+    var curve = new ECCurveFp(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
+    var points = [
+      { x: 0, y: 0 },
+      { x: 5, y: 8 }, { x: 5, y: 3 },
+      { x: 7, y: 8 }, { x: 7, y: 3 },
+      { x: 8, y: 5 }, { x: 8, y: 6 },
+      { x: 9, y: 10 }, { x: 9, y: 1 },
+      { x: 10, y: 8 }, { x: 10, y: 3 }
+    ].map(function(p) {
+      return new ECCurveFp.ECPointFp(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
+    })
+    var params = {
+      curve: curve,
+      G: points[6], // random
+      n: BigInteger.valueOf(points.length + 1),
+      h: undefined // can't be bothered
+    }
+    params.curve.params = params // FIXME: boo
+
+    // pG = P = -P
+    var P = params.G.multiply(params.curve.p)
+    assert(P.equals(params.G.negate()))
+
+    // nG = O
+    var nG = params.G.multiply(params.n)
+    assert(nG.isInfinity())
+
+    var inf = params.curve.getInfinity()
+    var a = points[2]
+    var b = points[7]
+    var z = points[0]
+    var y = new ECPointFp(curve, BigInteger.ONE, BigInteger.ONE)
 
     it('should validate field elements properly', function() {
       assert.ok(a.validate())
       assert.ok(b.validate())
-      //assert.ok(z.validate()) // FAILS: claims 0,0 is out of bounds, which is not true 0,0 is a valid curve point
+      assert.ok(z.validate())
       assert.ok(z.isOnCurve())
       assert.ok(!y.isOnCurve())
-      //assert.ok(!y.validate()) // FAILS: Throws an error instead of returning false
       assert.ok(!a.isInfinity())
       assert.ok(!b.isInfinity())
       assert.ok(inf.isInfinity())
       assert.ok(inf.isOnCurve())
-      //assert.ok(inf.validate()) // FAILS: Throws an error instead of returning false
     })
 
     it('should negate field elements properly', function() {
@@ -105,7 +111,7 @@ describe('Ecurve', function() {
       assert.equal(a.add(b).toString(), '(9,1)')  // (5,3) + (9,10) = (9,1)
       assert.equal(b.add(a).toString(), '(9,1)')  // (9,10) + (5,3) = (9,1)
       assert.equal(a.add(z).toString(), '(9,10)') // (5,3) + (0,0) = (9,10)
-      assert.equal(a.add(y).toString(), '(8,1)')  // (5,3) + (1,1) = (8,1)  <-- weird result should error out if one of the operands isn't on the curve
+      assert.equal(a.add(y).toString(), '(8,1)')  // (5,3) + (1,1) = (8,1)  <-- weird result should error out if one of the operands isn't on the curve // FIXME
 
       assert.equal(a.add(inf).toString(), '(5,3)') // (5,3) + INFINITY = (5,3)
       assert.equal(inf.add(a).toString(), '(5,3)') // INFINITY + (5,3) = (5,3)
