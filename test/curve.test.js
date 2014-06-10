@@ -1,6 +1,6 @@
 var assert = require('assert')
 var ecurve = require('../')
-var getECParams = ecurve.getECParams
+var getCurveByName = ecurve.getCurveByName
 
 var BigInteger = require('bigi')
 var Curve = ecurve.Curve
@@ -32,7 +32,7 @@ describe('Ecurve', function() {
 
   fixtures.valid.forEach(function(f) {
     it('calculates a public point for ' + f.D, function() {
-      var curve = ecurve.getECParams(f.Q.curve)
+      var curve = ecurve.getCurveByName(f.Q.curve)
 
       var d = new BigInteger(f.D)
       var Q = curve.params.G.multiply(d)
@@ -161,7 +161,7 @@ describe('Ecurve', function() {
   })
 
   describe('isOnCurve', function() {
-    var curve = getECParams('secp256k1')
+    var curve = getCurveByName('secp256k1')
 
     it('should return true for a point on the curve', function() {
       var d = BigInteger.ONE
@@ -187,7 +187,7 @@ describe('Ecurve', function() {
   })
 
   describe('validate', function() {
-    var curve = getECParams('secp256k1')
+    var curve = getCurveByName('secp256k1')
 
     it('should validate a point on the curve', function() {
       var d = BigInteger.ONE

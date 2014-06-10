@@ -1,14 +1,14 @@
 var assert = require('assert')
 var BigInteger = require('bigi')
 
-var getECParams = require('../lib/names')
+var getCurveByName = require('../lib/names')
 
 var curves = ['secp128r1', 'secp160k1', 'secp160r1', 'secp192k1', 'secp192r1', 'secp224r1', 'secp256k1', 'secp256r1']
 
-describe('+ getECParams(curveName)', function() {
+describe('+ getCurveByName(curveName)', function() {
   describe('> when the secp256k1 curve is passed', function() {
     it('should return the proper curve', function() {
-      var curve = getECParams('secp256k1')
+      var curve = getCurveByName('secp256k1')
       assert(curve)
       assert.equal(curve.p.toBuffer().toString('hex'), 'fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f')
       assert.equal(curve.a.toBuffer().toString('hex'), '') // 0 becomes ''
@@ -22,7 +22,7 @@ describe('+ getECParams(curveName)', function() {
   curves.forEach(function(c) {
     describe('> when ' + c, function() {
       it('should return the curve', function() {
-        var ecparams = getECParams(c)
+        var ecparams = getCurveByName(c)
         assert(ecparams)
       })
     })
@@ -30,7 +30,7 @@ describe('+ getECParams(curveName)', function() {
 
   describe('> when null is passed', function() {
     it('should return null for unknown curves', function() {
-      assert.equal(getECParams('foobar'), null)
+      assert.equal(getCurveByName('foobar'), null)
     })
   })
 })
