@@ -151,36 +151,4 @@ describe('Ecurve', function() {
       assert.equal(z.multiply(new BigInteger('2')).toString(), z.add(z).toString())
     })
   })
-
-  describe('- equals', function() {
-    it('should return true when equal', function() {
-      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF")
-      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC")
-      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
-      var curve1 = new Curve(p1, a1, b1)
-
-      var p2 = p1.clone()
-      var a2 = a1.clone()
-      var b2 = b1.clone()
-      var curve2 = new Curve(p2, a2, b2)
-
-      assert(curve1.equals(curve2))
-      assert(curve2.equals(curve1))
-    })
-
-    it('should return false when not equal', function() {
-      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF")
-      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC")
-      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
-      var curve1 = new Curve(p1, a1, b1)
-
-      var p2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFAA")
-      var a2 = a1.clone()
-      var b2 = b1.clone()
-      var curve2 = new Curve(p2, a2, b2)
-
-      assert(!curve1.equals(curve2))
-      assert(!curve2.equals(curve1))
-    })
-  })
 })
