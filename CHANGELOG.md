@@ -1,4 +1,4 @@
-0.7.0 / 2014-06-xx
+0.7.0 / 2014-06-10
 ------------------
 * major clean up by [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/9)
 * removed semicolons as per http://cryptocoinjs.com/about/contributing/
@@ -7,6 +7,11 @@
 * `ECCurveFp` field `q` renamed to `p` / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/10)
 * `ecparams` field `g` renamed to `G` / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/10)
 * `ECFieldElementFp` shown unnecessary (deleted) / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/11)
+* Chopped of all namespacing for function/class names. / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/13)
+* Fixed validation and added method `isOnCurve()` / [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/12)
+* added methods `fromAffine()`, added properties `affineX` and `affineY` to `Point`. This is because
+`Point` internally stores coordinates as Jacobian. [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/14)
+* Renamed `getECParams()` to `getCurveByName()` [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/15)
 
 0.6.0 / 2014-05-31
 ------------------
