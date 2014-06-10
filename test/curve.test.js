@@ -2,8 +2,8 @@ var assert = require('assert')
 
 var BigInteger = require('bigi')
 var ecurve = require('../')
-var ECCurveFp = ecurve.ECCurveFp
-var ECPointFp = ecurve.ECPointFp
+var Curve = ecurve.Curve
+var Point = ecurve.Point
 
 var fixtures = require('./fixtures/curve')
 
@@ -13,7 +13,7 @@ describe('Ecurve', function() {
     var a = BigInteger.valueOf(22)
     var b = BigInteger.valueOf(33)
 
-    var curve = new ECCurveFp(p, a, b)
+    var curve = new Curve(p, a, b)
     assert.equal(curve.p.toString(), '11')
     assert.equal(curve.a.toString(), '22')
     assert.equal(curve.b.toString(), '33')
@@ -55,7 +55,7 @@ describe('Ecurve', function() {
     //    0 1  2  3  4  5  6  7  8  9 10
     ///////////////////////////////////////////////
 
-    var curve = new ECCurveFp(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
+    var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
     var points = [
       { x: 0, y: 0 },
       { x: 5, y: 8 }, { x: 5, y: 3 },
@@ -64,7 +64,7 @@ describe('Ecurve', function() {
       { x: 9, y: 10 }, { x: 9, y: 1 },
       { x: 10, y: 8 }, { x: 10, y: 3 }
     ].map(function(p) {
-      return new ECCurveFp.ECPointFp(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
+      return new Curve.Point(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
     })
     var params = {
       curve: curve,
@@ -86,7 +86,7 @@ describe('Ecurve', function() {
     var a = points[2]
     var b = points[7]
     var z = points[0]
-    var y = new ECPointFp(curve, BigInteger.ONE, BigInteger.ONE)
+    var y = new Point(curve, BigInteger.ONE, BigInteger.ONE)
 
     it('should validate field elements properly', function() {
       assert.ok(a.validate())
@@ -157,12 +157,12 @@ describe('Ecurve', function() {
       var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF")
       var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC")
       var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
-      var curve1 = new ECCurveFp(p1, a1, b1)
+      var curve1 = new Curve(p1, a1, b1)
 
       var p2 = p1.clone()
       var a2 = a1.clone()
       var b2 = b1.clone()
-      var curve2 = new ECCurveFp(p2, a2, b2)
+      var curve2 = new Curve(p2, a2, b2)
 
       assert(curve1.equals(curve2))
       assert(curve2.equals(curve1))
@@ -172,12 +172,12 @@ describe('Ecurve', function() {
       var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF")
       var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC")
       var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
-      var curve1 = new ECCurveFp(p1, a1, b1)
+      var curve1 = new Curve(p1, a1, b1)
 
       var p2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFAA")
       var a2 = a1.clone()
       var b2 = b1.clone()
-      var curve2 = new ECCurveFp(p2, a2, b2)
+      var curve2 = new Curve(p2, a2, b2)
 
       assert(!curve1.equals(curve2))
       assert(!curve2.equals(curve1))

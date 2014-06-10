@@ -3,16 +3,16 @@ var assert= require('assert')
 var BigInteger = require('bigi')
 
 var ecurve = require('../')
-var ECCurveFp = ecurve.ECCurveFp
-var ECPointFp = ecurve.ECPointFp
+var Curve = ecurve.Curve
+var Point = ecurve.Point
 var getECParams = ecurve.getECParams
 
 var fixtures = require('./fixtures/point')
 
-describe('ECPointFp', function() {
+describe('Point', function() {
   describe('+ decodeFrom()', function() {
     it('should be an static (class) method', function() {
-      assert.equal(typeof ECPointFp.decodeFrom, 'function')
+      assert.equal(typeof Point.decodeFrom, 'function')
     })
 
     var pubHex = '04d6d48c4a66a303856d9584a6ad49ce0965e9f0a5e4dcae878a3d017bd58ad7af3d0b920af7bd54626103848150f8b083edcba99d0a18f1035b6036da1500c6c0'
@@ -21,15 +21,15 @@ describe('ECPointFp', function() {
 
     it('should work with uncompressed keys', function(){
       var curve = getECParams('secp256k1').curve
-      var pubPoint = ECPointFp.decodeFrom(curve, pubKey)
+      var pubPoint = Point.decodeFrom(curve, pubKey)
       assert.equal(pubHex, pubPoint.getEncoded(false).toString('hex'))
     })
 
     it('should work with compressed keys', function() {
       var curve = getECParams('secp256k1').curve
-      var pubPoint = ECPointFp.decodeFrom(curve, pubKey)
+      var pubPoint = Point.decodeFrom(curve, pubKey)
       var pubKeyCompressed = pubPoint.getEncoded(true)
-      var pubPointCompressed = ECPointFp.decodeFrom(curve, pubKeyCompressed)
+      var pubPointCompressed = Point.decodeFrom(curve, pubKeyCompressed)
       assert.equal(pubHex, pubPointCompressed.getEncoded(false).toString('hex'))
       assert.equal(pubKeyCompressed.toString('hex'), pubPointCompressed.getEncoded(true).toString('hex'))
       assert.equal(pubHexCompressed, pubKeyCompressed.toString('hex'))
@@ -40,7 +40,7 @@ describe('ECPointFp', function() {
         var curve = getECParams(f.curve).curve
         var buffer = new Buffer(f.hex, 'hex')
 
-        var decoded = ECPointFp.decodeFrom(curve, buffer)
+        var decoded = Point.decodeFrom(curve, buffer)
         assert.equal(decoded.getX().toString(), f.x)
         assert.equal(decoded.getY().toString(), f.y)
         assert.equal(decoded.compressed, f.compressed)
@@ -53,7 +53,7 @@ describe('ECPointFp', function() {
         var buffer = new Buffer(f.hex, 'hex')
 
         assert.throws(function() {
-          ECPointFp.decodeFrom(curve, buffer)
+          Point.decodeFrom(curve, buffer)
         }, /Invalid sequence length|Invalid sequence tag/)
       })
     })
@@ -63,7 +63,7 @@ describe('ECPointFp', function() {
     fixtures.valid.forEach(function(f) {
       it('encode ' + f.hex + ' correctly', function() {
         var curve = getECParams(f.curve).curve
-        var Q = new ECPointFp(curve, new BigInteger(f.x), new BigInteger(f.y))
+        var Q = new Point(curve, new BigInteger(f.x), new BigInteger(f.y))
 
         var encoded = Q.getEncoded(f.compressed)
         assert.equal(encoded.toString('hex'), f.hex)
@@ -79,7 +79,7 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = false
 
-          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
+          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
 
           var encoded = Q.getEncoded(doCompress)
@@ -95,7 +95,7 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = true
 
-          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
+          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
 
           var encoded = Q.getEncoded(doCompress)
@@ -113,7 +113,7 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = false
 
-          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
+          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
 
           var encoded = Q.getEncoded(doCompress)
@@ -129,7 +129,7 @@ describe('ECPointFp', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = true
 
-          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
+          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
 
           var encoded = Q.getEncoded(doCompress)
@@ -146,7 +146,7 @@ describe('ECPointFp', function() {
           var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
           var curve = getECParams('secp256k1').curve
 
-          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
+          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
 
           var encoded = Q.getEncoded()
@@ -161,7 +161,7 @@ describe('ECPointFp', function() {
           var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
           var curve = getECParams('secp256k1').curve
 
-          var Q = new ECPointFp(curve, new BigInteger(x), new BigInteger(y))
+          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
 
           var encoded = Q.getEncoded()
@@ -177,11 +177,11 @@ describe('ECPointFp', function() {
     it('should return true when points are equal', function() {
       var x1 = BigInteger.fromHex("FFFF")
       var y1 = BigInteger.fromHex("FFFF")
-      var P1 = new ECPointFp(curve, x1, y1)
+      var P1 = new Point(curve, x1, y1)
 
       var x2 = x1.clone()
       var y2 = y1.clone()
-      var P2 = new ECPointFp(curve, x2, y2)
+      var P2 = new Point(curve, x2, y2)
 
       assert(P1.equals(P2))
       assert(P2.equals(P1))
@@ -190,11 +190,11 @@ describe('ECPointFp', function() {
     it('should return false when points are noassertequal', function() {
       var x1 = BigInteger.fromHex("FFFF")
       var y1 = BigInteger.fromHex("FFFF")
-      var P1 = new ECPointFp(curve, x1, y1)
+      var P1 = new Point(curve, x1, y1)
 
       var x2 = BigInteger.fromHex("AAAA")
       var y2 = y1.clone()
-      var P2 = new ECPointFp(curve, x2, y2)
+      var P2 = new Point(curve, x2, y2)
 
       assert(!P1.equals(P2))
       assert(!P2.equals(P1))
@@ -211,18 +211,18 @@ describe('ECPointFp', function() {
     })
 
     it('should return true for points at (0, 0) if they are on the curve', function() {
-      var curve = new ECCurveFp(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
-      var P = new ECPointFp(curve, BigInteger.ZERO, BigInteger.ZERO)
+      var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
+      var P = new Point(curve, BigInteger.ZERO, BigInteger.ZERO)
       assert.ok(P.isOnCurve())
     })
 
     it('should return false for points not in the finite field', function() {
-      var P = new ECPointFp(curve, curve.p.add(BigInteger.ONE), BigInteger.ZERO)
+      var P = new Point(curve, curve.p.add(BigInteger.ONE), BigInteger.ZERO)
       assert(!P.isOnCurve())
     })
 
     it('should return false for a point not on the curve', function() {
-      var P = new ECPointFp(curve, BigInteger.ONE, BigInteger.ONE)
+      var P = new Point(curve, BigInteger.ONE, BigInteger.ONE)
       assert(!P.isOnCurve())
     })
   })
@@ -238,7 +238,7 @@ describe('ECPointFp', function() {
     })
 
     it('should not validate a point not on the curve', function() {
-      var P = new ECPointFp(curve, BigInteger.ONE, BigInteger.ONE)
+      var P = new Point(curve, BigInteger.ONE, BigInteger.ONE)
 
       assert.throws(function() {
         P.validate()
