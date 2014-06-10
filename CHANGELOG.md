@@ -1,3 +1,22 @@
+0.8.0 / 2014-06-10
+------------------
+* broke compatiblity, removed `Point` class from `Curve`. [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/16) 
+
+no longer works:
+
+```js
+var Curve = require('ecurve').Curve
+var Point = Curve.Point
+```
+
+better way:
+
+```js
+var Curve = requre('ecurve').Curve
+var Point = require('ecurve').Point
+```
+
+
 0.7.0 / 2014-06-10
 ------------------
 * major clean up by [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/9)
