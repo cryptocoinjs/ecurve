@@ -1,7 +1,8 @@
 var assert = require('assert')
+var ecurve = require('../')
+var getECParams = ecurve.getECParams
 
 var BigInteger = require('bigi')
-var ecurve = require('../')
 var Curve = ecurve.Curve
 var Point = ecurve.Point
 
@@ -12,23 +13,32 @@ describe('Ecurve', function() {
     var p = BigInteger.valueOf(11)
     var a = BigInteger.valueOf(22)
     var b = BigInteger.valueOf(33)
+    var Gx = BigInteger.valueOf(44)
+    var Gy = BigInteger.valueOf(55)
+    var n = BigInteger.valueOf(66)
+    var h = BigInteger.valueOf(77)
 
-    var curve = new Curve(p, a, b)
-    assert.equal(curve.p.toString(), '11')
-    assert.equal(curve.a.toString(), '22')
-    assert.equal(curve.b.toString(), '33')
+    var curve = new Curve(p, a, b, Gx, Gy, n, h)
+    assert(curve.p.equals(p))
+    assert(curve.a.equals(a))
+    assert(curve.b.equals(b))
+
+    assert(curve.params.G.equals(Point.fromAffine(curve, Gx, Gy)))
+    assert(curve.params.n.equals(n))
+    assert(curve.params.h.equals(h))
+    assert(curve.a.equals(a))
+    assert(curve.b.equals(b))
   });
 
   fixtures.valid.forEach(function(f) {
     it('calculates a public point for ' + f.D, function() {
-      var params = ecurve.getECParams(f.Q.curve)
-      var curve = params.curve
+      var curve = ecurve.getECParams(f.Q.curve)
 
       var d = new BigInteger(f.D)
-      var Q = params.G.multiply(d)
+      var Q = curve.params.G.multiply(d)
 
-      assert.ok(Q.getX().toString(), f.Q.x)
-      assert.ok(Q.getY().toString(), f.Q.y)
+      assert.ok(Q.affineX.toString(), f.Q.x)
+      assert.ok(Q.affineY.toString(), f.Q.y)
     })
   })
 
@@ -55,7 +65,9 @@ describe('Ecurve', function() {
     //    0 1  2  3  4  5  6  7  8  9 10
     ///////////////////////////////////////////////
 
-    var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
+    var Gx = BigInteger.valueOf(8), Gy = BigInteger.valueOf(6)
+    var n = BigInteger.valueOf(12)
+    var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO, Gx, Gy, n, undefined)
     var points = [
       { x: 0, y: 0 },
       { x: 5, y: 8 }, { x: 5, y: 3 },
@@ -64,40 +76,36 @@ describe('Ecurve', function() {
       { x: 9, y: 10 }, { x: 9, y: 1 },
       { x: 10, y: 8 }, { x: 10, y: 3 }
     ].map(function(p) {
-      return new Curve.Point(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
+      return Point.fromAffine(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
     })
-    var params = {
-      curve: curve,
-      G: points[6], // random
-      n: BigInteger.valueOf(points.length + 1),
-      h: undefined // can't be bothered
-    }
-    params.curve.params = params // FIXME: boo
 
     // pG = P = -P
-    var P = params.G.multiply(params.curve.p)
-    assert(P.equals(params.G.negate()))
+    var P = curve.params.G.multiply(curve.p)
+    assert(P.equals(curve.params.G.negate()))
 
     // nG = O
-    var nG = params.G.multiply(params.n)
-    assert(nG.isInfinity())
+    console.log(curve)
+    console.log(curve.params)
+    console.log(curve.params.n)
+    var nG = curve.params.G.multiply(curve.params.n)
+    assert(curve.isInfinity(nG))
 
-    var inf = params.curve.getInfinity()
+    var inf = curve.infinity
     var a = points[2]
     var b = points[7]
     var z = points[0]
-    var y = new Point(curve, BigInteger.ONE, BigInteger.ONE)
+    var y = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
 
     it('should validate field elements properly', function() {
-      assert.ok(a.validate())
-      assert.ok(b.validate())
-      assert.ok(z.validate())
-      assert.ok(z.isOnCurve())
-      assert.ok(!y.isOnCurve())
-      assert.ok(!a.isInfinity())
-      assert.ok(!b.isInfinity())
-      assert.ok(inf.isInfinity())
-      assert.ok(inf.isOnCurve())
+      assert.ok(curve.validate(a))
+      assert.ok(curve.validate(b))
+      assert.ok(curve.validate(z))
+      assert.ok(curve.isOnCurve(z))
+      assert.ok(!curve.isOnCurve(y))
+      assert.ok(!curve.isInfinity(a))
+      assert.ok(!curve.isInfinity(b))
+      assert.ok(curve.isInfinity(inf))
+      assert.ok(curve.isOnCurve(inf))
     })
 
     it('should negate field elements properly', function() {
@@ -152,35 +160,61 @@ describe('Ecurve', function() {
     })
   })
 
-  describe('- equals', function() {
-    it('should return true when equal', function() {
-      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF")
-      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC")
-      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
-      var curve1 = new Curve(p1, a1, b1)
+  describe('isOnCurve', function() {
+    var curve = getECParams('secp256k1')
 
-      var p2 = p1.clone()
-      var a2 = a1.clone()
-      var b2 = b1.clone()
-      var curve2 = new Curve(p2, a2, b2)
-
-      assert(curve1.equals(curve2))
-      assert(curve2.equals(curve1))
+    it('should return true for a point on the curve', function() {
+      var d = BigInteger.ONE
+      var Q = curve.params.G.multiply(d)
+      assert.ok(curve.isOnCurve(Q))
     })
 
-    it('should return false when not equal', function() {
-      var p1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFF")
-      var a1 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFFC")
-      var b1 = BigInteger.fromHex("E87579C11079F43DD824993C2CEE5ED3")
-      var curve1 = new Curve(p1, a1, b1)
-
-      var p2 = BigInteger.fromHex("FFFFFFFDFFFFFFFFFFFFFFFFFFFFFFAA")
-      var a2 = a1.clone()
-      var b2 = b1.clone()
-      var curve2 = new Curve(p2, a2, b2)
-
-      assert(!curve1.equals(curve2))
-      assert(!curve2.equals(curve1))
+    it('should return true for points at (0, 0) if they are on the curve', function() {
+      var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO, BigInteger.valueOf(8), BigInteger.valueOf(6), 12, undefined)
+      var P = Point.fromAffine(curve, BigInteger.ZERO, BigInteger.ZERO)
+      assert.ok(curve.isOnCurve(P))
     })
+
+    it('should return false for points not in the finite field', function() {
+      var P = Point.fromAffine(curve, curve.p.add(BigInteger.ONE), BigInteger.ZERO)
+      assert(!curve.isOnCurve(P))
+    })
+
+    it('should return false for a point not on the curve', function() {
+      var P = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
+      assert(!curve.isOnCurve(P))
+    })
+  })
+
+  describe('validate', function() {
+    var curve = getECParams('secp256k1')
+
+    it('should validate a point on the curve', function() {
+      var d = BigInteger.ONE
+      var Q = curve.params.G.multiply(d)
+
+      assert.ok(curve.validate(Q))
+    })
+
+    it('should not validate a point not on the curve', function() {
+      var P = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
+
+      assert.throws(function() {
+        curve.validate(P)
+      }, /Point is not on the curve/)
+    })
+
+    it('should not validate the point at infinity', function() {
+      assert.throws(function() {
+        curve.validate(curve.infinity)
+      }, /Point is at infinity/)
+    })
+
+    // TODO: Test data needed...
+//    it('should not validate a point not on the curve', function() {
+//      assert.throws(function() {
+//        curve.validate(Q)
+//      }, /Point is not a scalar multiple of G/)
+//    })
   })
 })
