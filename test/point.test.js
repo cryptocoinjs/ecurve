@@ -41,8 +41,8 @@ describe('Point', function() {
         var buffer = new Buffer(f.hex, 'hex')
 
         var decoded = Point.decodeFrom(curve, buffer)
-        assert.equal(decoded.getX().toString(), f.x)
-        assert.equal(decoded.getY().toString(), f.y)
+        assert.equal(decoded.x.toString(), f.x)
+        assert.equal(decoded.y.toString(), f.y)
         assert.equal(decoded.compressed, f.compressed)
       })
     })
@@ -63,7 +63,7 @@ describe('Point', function() {
     fixtures.valid.forEach(function(f) {
       it('encode ' + f.hex + ' correctly', function() {
         var curve = getECParams(f.curve).curve
-        var Q = new Point(curve, new BigInteger(f.x), new BigInteger(f.y))
+        var Q = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
 
         var encoded = Q.getEncoded(f.compressed)
         assert.equal(encoded.toString('hex'), f.hex)
@@ -79,7 +79,7 @@ describe('Point', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = false
 
-          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
+          var Q = Point.fromAffine(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
 
           var encoded = Q.getEncoded(doCompress)
@@ -95,7 +95,7 @@ describe('Point', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = true
 
-          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
+          var Q = Point.fromAffine(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
 
           var encoded = Q.getEncoded(doCompress)
@@ -113,7 +113,7 @@ describe('Point', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = false
 
-          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
+          var Q = Point.fromAffine(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
 
           var encoded = Q.getEncoded(doCompress)
@@ -129,7 +129,7 @@ describe('Point', function() {
           var curve = getECParams('secp256k1').curve
           var doCompress = true
 
-          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
+          var Q = Point.fromAffine(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
 
           var encoded = Q.getEncoded(doCompress)
@@ -146,7 +146,7 @@ describe('Point', function() {
           var res = "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
           var curve = getECParams('secp256k1').curve
 
-          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
+          var Q = Point.fromAffine(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = false
 
           var encoded = Q.getEncoded()
@@ -161,7 +161,7 @@ describe('Point', function() {
           var res = "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
           var curve = getECParams('secp256k1').curve
 
-          var Q = new Point(curve, new BigInteger(x), new BigInteger(y))
+          var Q = Point.fromAffine(curve, new BigInteger(x), new BigInteger(y))
           Q.compressed = true
 
           var encoded = Q.getEncoded()
@@ -177,11 +177,11 @@ describe('Point', function() {
     it('should return true when points are equal', function() {
       var x1 = BigInteger.fromHex("FFFF")
       var y1 = BigInteger.fromHex("FFFF")
-      var P1 = new Point(curve, x1, y1)
+      var P1 = Point.fromAffine(curve, x1, y1)
 
       var x2 = x1.clone()
       var y2 = y1.clone()
-      var P2 = new Point(curve, x2, y2)
+      var P2 = Point.fromAffine(curve, x2, y2)
 
       assert(P1.equals(P2))
       assert(P2.equals(P1))
@@ -190,11 +190,11 @@ describe('Point', function() {
     it('should return false when points are noassertequal', function() {
       var x1 = BigInteger.fromHex("FFFF")
       var y1 = BigInteger.fromHex("FFFF")
-      var P1 = new Point(curve, x1, y1)
+      var P1 = Point.fromAffine(curve, x1, y1)
 
       var x2 = BigInteger.fromHex("AAAA")
       var y2 = y1.clone()
-      var P2 = new Point(curve, x2, y2)
+      var P2 = Point.fromAffine(curve, x2, y2)
 
       assert(!P1.equals(P2))
       assert(!P2.equals(P1))
@@ -212,17 +212,17 @@ describe('Point', function() {
 
     it('should return true for points at (0, 0) if they are on the curve', function() {
       var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
-      var P = new Point(curve, BigInteger.ZERO, BigInteger.ZERO)
+      var P = Point.fromAffine(curve, BigInteger.ZERO, BigInteger.ZERO)
       assert.ok(P.isOnCurve())
     })
 
     it('should return false for points not in the finite field', function() {
-      var P = new Point(curve, curve.p.add(BigInteger.ONE), BigInteger.ZERO)
+      var P = Point.fromAffine(curve, curve.p.add(BigInteger.ONE), BigInteger.ZERO)
       assert(!P.isOnCurve())
     })
 
     it('should return false for a point not on the curve', function() {
-      var P = new Point(curve, BigInteger.ONE, BigInteger.ONE)
+      var P = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
       assert(!P.isOnCurve())
     })
   })
@@ -238,7 +238,7 @@ describe('Point', function() {
     })
 
     it('should not validate a point not on the curve', function() {
-      var P = new Point(curve, BigInteger.ONE, BigInteger.ONE)
+      var P = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
 
       assert.throws(function() {
         P.validate()

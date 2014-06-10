@@ -27,8 +27,8 @@ describe('Ecurve', function() {
       var d = new BigInteger(f.D)
       var Q = params.G.multiply(d)
 
-      assert.ok(Q.getX().toString(), f.Q.x)
-      assert.ok(Q.getY().toString(), f.Q.y)
+      assert.ok(Q.affineX.toString(), f.Q.x)
+      assert.ok(Q.affineY.toString(), f.Q.y)
     })
   })
 
@@ -64,7 +64,7 @@ describe('Ecurve', function() {
       { x: 9, y: 10 }, { x: 9, y: 1 },
       { x: 10, y: 8 }, { x: 10, y: 3 }
     ].map(function(p) {
-      return new Curve.Point(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
+      return Point.fromAffine(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
     })
     var params = {
       curve: curve,
@@ -86,7 +86,7 @@ describe('Ecurve', function() {
     var a = points[2]
     var b = points[7]
     var z = points[0]
-    var y = new Point(curve, BigInteger.ONE, BigInteger.ONE)
+    var y = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
 
     it('should validate field elements properly', function() {
       assert.ok(a.validate())
