@@ -13,20 +13,29 @@ describe('Ecurve', function() {
     var p = BigInteger.valueOf(11)
     var a = BigInteger.valueOf(22)
     var b = BigInteger.valueOf(33)
+    var Gx = BigInteger.valueOf(44)
+    var Gy = BigInteger.valueOf(55)
+    var n = BigInteger.valueOf(66)
+    var h = BigInteger.valueOf(77)
 
-    var curve = new Curve(p, a, b)
-    assert.equal(curve.p.toString(), '11')
-    assert.equal(curve.a.toString(), '22')
-    assert.equal(curve.b.toString(), '33')
+    var curve = new Curve(p, a, b, Gx, Gy, n, h)
+    assert(curve.p.equals(p))
+    assert(curve.a.equals(a))
+    assert(curve.b.equals(b))
+
+    assert(curve.params.G.equals(Point.fromAffine(curve, Gx, Gy)))
+    assert(curve.params.n.equals(n))
+    assert(curve.params.h.equals(h))
+    assert(curve.a.equals(a))
+    assert(curve.b.equals(b))
   });
 
   fixtures.valid.forEach(function(f) {
     it('calculates a public point for ' + f.D, function() {
-      var params = ecurve.getECParams(f.Q.curve)
-      var curve = params.curve
+      var curve = ecurve.getECParams(f.Q.curve)
 
       var d = new BigInteger(f.D)
-      var Q = params.G.multiply(d)
+      var Q = curve.params.G.multiply(d)
 
       assert.ok(Q.affineX.toString(), f.Q.x)
       assert.ok(Q.affineY.toString(), f.Q.y)
@@ -56,7 +65,9 @@ describe('Ecurve', function() {
     //    0 1  2  3  4  5  6  7  8  9 10
     ///////////////////////////////////////////////
 
-    var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
+    var Gx = BigInteger.valueOf(8), Gy = BigInteger.valueOf(6)
+    var n = BigInteger.valueOf(12)
+    var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO, Gx, Gy, n, undefined)
     var points = [
       { x: 0, y: 0 },
       { x: 5, y: 8 }, { x: 5, y: 3 },
@@ -67,23 +78,19 @@ describe('Ecurve', function() {
     ].map(function(p) {
       return Point.fromAffine(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
     })
-    var params = {
-      curve: curve,
-      G: points[6], // random
-      n: BigInteger.valueOf(points.length + 1),
-      h: undefined // can't be bothered
-    }
-    params.curve.params = params // FIXME: boo
 
     // pG = P = -P
-    var P = params.G.multiply(params.curve.p)
-    assert(P.equals(params.G.negate()))
+    var P = curve.params.G.multiply(curve.p)
+    assert(P.equals(curve.params.G.negate()))
 
     // nG = O
-    var nG = params.G.multiply(params.n)
+    console.log(curve)
+    console.log(curve.params)
+    console.log(curve.params.n)
+    var nG = curve.params.G.multiply(curve.params.n)
     assert(curve.isInfinity(nG))
 
-    var inf = params.curve.infinity
+    var inf = curve.infinity
     var a = points[2]
     var b = points[7]
     var z = points[0]
@@ -154,7 +161,7 @@ describe('Ecurve', function() {
   })
 
   describe('isOnCurve', function() {
-    var curve = getECParams('secp256k1').curve
+    var curve = getECParams('secp256k1')
 
     it('should return true for a point on the curve', function() {
       var d = BigInteger.ONE
@@ -163,7 +170,7 @@ describe('Ecurve', function() {
     })
 
     it('should return true for points at (0, 0) if they are on the curve', function() {
-      var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO)
+      var curve = new Curve(BigInteger.valueOf(11), BigInteger.ONE, BigInteger.ZERO, BigInteger.valueOf(8), BigInteger.valueOf(6), 12, undefined)
       var P = Point.fromAffine(curve, BigInteger.ZERO, BigInteger.ZERO)
       assert.ok(curve.isOnCurve(P))
     })
@@ -180,7 +187,7 @@ describe('Ecurve', function() {
   })
 
   describe('validate', function() {
-    var curve = getECParams('secp256k1').curve
+    var curve = getECParams('secp256k1')
 
     it('should validate a point on the curve', function() {
       var d = BigInteger.ONE
