@@ -23,9 +23,9 @@ describe('Ecurve', function() {
     assert(curve.a.equals(a))
     assert(curve.b.equals(b))
 
-    assert(curve.params.G.equals(Point.fromAffine(curve, Gx, Gy)))
-    assert(curve.params.n.equals(n))
-    assert(curve.params.h.equals(h))
+    assert(curve.G.equals(Point.fromAffine(curve, Gx, Gy)))
+    assert(curve.n.equals(n))
+    assert(curve.h.equals(h))
     assert(curve.a.equals(a))
     assert(curve.b.equals(b))
   });
@@ -35,7 +35,7 @@ describe('Ecurve', function() {
       var curve = ecurve.getCurveByName(f.Q.curve)
 
       var d = new BigInteger(f.D)
-      var Q = curve.params.G.multiply(d)
+      var Q = curve.G.multiply(d)
 
       assert.ok(Q.affineX.toString(), f.Q.x)
       assert.ok(Q.affineY.toString(), f.Q.y)
@@ -80,14 +80,11 @@ describe('Ecurve', function() {
     })
 
     // pG = P = -P
-    var P = curve.params.G.multiply(curve.p)
-    assert(P.equals(curve.params.G.negate()))
+    var P = curve.G.multiply(curve.p)
+    assert(P.equals(curve.G.negate()))
 
     // nG = O
-    console.log(curve)
-    console.log(curve.params)
-    console.log(curve.params.n)
-    var nG = curve.params.G.multiply(curve.params.n)
+    var nG = curve.G.multiply(curve.n)
     assert(curve.isInfinity(nG))
 
     var inf = curve.infinity
@@ -165,7 +162,7 @@ describe('Ecurve', function() {
 
     it('should return true for a point on the curve', function() {
       var d = BigInteger.ONE
-      var Q = curve.params.G.multiply(d)
+      var Q = curve.G.multiply(d)
       assert.ok(curve.isOnCurve(Q))
     })
 
@@ -191,7 +188,7 @@ describe('Ecurve', function() {
 
     it('should validate a point on the curve', function() {
       var d = BigInteger.ONE
-      var Q = curve.params.G.multiply(d)
+      var Q = curve.G.multiply(d)
 
       assert.ok(curve.validate(Q))
     })
