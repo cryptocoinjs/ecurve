@@ -1,3 +1,7 @@
+0.9.0 / 2014-06-12
+------------------
+* broke compatibility, simplified fields on `Curve` class. [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/17)
+
 0.8.0 / 2014-06-10
 ------------------
 * broke compatiblity, removed `Point` class from `Curve`. [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/16) 
