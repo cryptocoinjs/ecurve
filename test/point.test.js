@@ -35,7 +35,7 @@ describe('Point', function() {
     })
 
     fixtures.valid.forEach(function(f) {
-      it('decodes ' + f.hex + ' correctly', function() {
+      it('decodes ' + f.hex + ' for ' + f.curve + ' correctly', function() {
         var curve = getCurveByName(f.curve)
         var buffer = new Buffer(f.hex, 'hex')
 
