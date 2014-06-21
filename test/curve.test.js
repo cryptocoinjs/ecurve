@@ -186,9 +186,27 @@ describe('Ecurve', function() {
       var P = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
       assert(!curve.isOnCurve(P))
     })
+
+    pointFixtures.valid.forEach(function(f) {
+      it('should return true for ' + f.hex + ' on ' + f.curve, function() {
+        var curve = getCurveByName(f.curve)
+        var P = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
+
+        assert.ok(curve.isOnCurve(P))
+      })
+    })
   })
 
   describe('validate', function() {
+    pointFixtures.valid.forEach(function(f) {
+      it('should return true for ' + f.hex + ' on ' + f.curve, function() {
+        var curve = getCurveByName(f.curve)
+        var P = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
+
+        assert.ok(curve.validate(P))
+      })
+    })
+
     var curve = getCurveByName('secp256k1')
 
     it('should validate a point on the curve', function() {
