@@ -76,22 +76,27 @@
   "invalid": [
     {
       "description": "Invalid sequence tag",
+      "exception": "Invalid sequence tag",
       "hex": "0179be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
     },
     {
       "description": "Sequence too short",
+      "exception": "Invalid sequence length",
       "hex": "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10"
     },
     {
       "description": "Sequence too short (compressed)",
+      "exception": "Invalid sequence length",
       "hex": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f8"
     },
     {
       "description": "Sequence too long",
+      "exception": "Invalid sequence length",
       "hex": "0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b80000"
     },
     {
       "description": "Sequence too long (compressed)",
+      "exception": "Invalid sequence length",
       "hex": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f817980000"
     }
   ]

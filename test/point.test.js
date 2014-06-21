@@ -45,7 +45,7 @@ describe('Point', function() {
 
         assert.throws(function() {
           Point.decodeFrom(curve, buffer)
-        }, /Invalid sequence length|Invalid sequence tag/)
+        }, new RegExp(f.exception))
       })
     })
   })
