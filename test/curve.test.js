@@ -7,6 +7,7 @@ var Curve = ecurve.Curve
 var Point = ecurve.Point
 
 var fixtures = require('./fixtures/curve')
+var pointFixtures = require('./fixtures/point')
 
 describe('Ecurve', function() {
   it('should create curve objects', function() {
@@ -217,5 +218,21 @@ describe('Ecurve', function() {
 //        curve.validate(Q)
 //      }, /Point is not a scalar multiple of G/)
 //    })
+  })
+
+  describe('pointFromX', function() {
+    pointFixtures.valid.forEach(function(f) {
+      var curve = getCurveByName(f.curve)
+
+      var x = new BigInteger(f.x)
+      var odd = !(new BigInteger(f.y).isEven())
+
+      it('recovers Y coordinate ' + f.y + ' for curve ' + f.curve + ' correctly', function() {
+        var actual = curve.pointFromX(odd, x)
+
+        assert.equal(actual.affineX.toString(), f.x)
+        assert.equal(actual.affineY.toString(), f.y)
+      })
+    })
   })
 })
