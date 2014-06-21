@@ -79,13 +79,17 @@ describe('Ecurve', function() {
       return Point.fromAffine(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
     })
 
-    // pG = P = -P
-    var P = curve.G.multiply(curve.p)
-    assert(P.equals(curve.G.negate()))
+    it('pG = P = -P', function() {
+      var P = curve.G.multiply(curve.p)
 
-    // nG = O
-    var nG = curve.G.multiply(curve.n)
-    assert(curve.isInfinity(nG))
+      assert(P.equals(curve.G.negate()))
+    })
+
+    it('nG = O', function() {
+      var nG = curve.G.multiply(curve.n)
+
+      assert(curve.isInfinity(nG))
+    })
 
     var inf = curve.infinity
     var a = points[2]
