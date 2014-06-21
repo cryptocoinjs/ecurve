@@ -9,6 +9,20 @@ var Point = ecurve.Point
 var fixtures = require('./fixtures/point')
 
 describe('Point', function() {
+  describe('multiply', function() {
+    fixtures.valid.forEach(function(f) {
+      it('gives (' + f.x + ', ' + f.y + ') for ' + f.d + ' on ' + f.curve, function() {
+        var curve = getCurveByName(f.curve)
+
+        var d = new BigInteger(f.d)
+        var Q = curve.G.multiply(d)
+
+        assert.equal(Q.affineX.toString(), f.x)
+        assert.equal(Q.affineY.toString(), f.y)
+      })
+    })
+  })
+
   describe('decodeFrom', function() {
     fixtures.valid.forEach(function(f) {
       it('decodes ' + f.hex + ' for ' + f.curve + ' correctly', function() {
