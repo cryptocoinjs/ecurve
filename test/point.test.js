@@ -59,7 +59,7 @@ describe('Point', function() {
     })
 
     fixtures.valid.forEach(function(f) {
-      it('encode ' + f.hex + ' correctly', function() {
+      it('encodes ' + f.hex + ' on ' + f.curve + ' correctly', function() {
         var curve = getCurveByName(f.curve)
         var Q = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
 
