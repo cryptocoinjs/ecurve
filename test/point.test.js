@@ -49,6 +49,15 @@ describe('Point', function() {
   })
 
   describe('getEncoded', function() {
+    it('defaults to compressed', function() {
+      var curve = getCurveByName('secp128r1')
+
+      var d = new BigInteger('1')
+      var Q = curve.G.multiply(d)
+
+      assert.equal(Q.getEncoded().toString('hex'), '03161ff7528b899b2d0c28607ca52c5b86')
+    })
+
     fixtures.valid.forEach(function(f) {
       it('encode ' + f.hex + ' correctly', function() {
         var curve = getCurveByName(f.curve)
