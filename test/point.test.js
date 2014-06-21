@@ -9,7 +9,7 @@ var Point = ecurve.Point
 var fixtures = require('./fixtures/point')
 
 describe('Point', function() {
-  describe('+ decodeFrom()', function() {
+  describe('decodeFrom', function() {
     it('should be an static (class) method', function() {
       assert.equal(typeof Point.decodeFrom, 'function')
     })
@@ -58,7 +58,7 @@ describe('Point', function() {
     })
   })
 
-  describe('- getEncoded()', function() {
+  describe('getEncoded', function() {
     fixtures.valid.forEach(function(f) {
       it('encode ' + f.hex + ' correctly', function() {
         var curve = getCurveByName(f.curve)
@@ -69,8 +69,8 @@ describe('Point', function() {
       })
     })
 
-    describe('> when compressed flag is seassertto true', function() {
-      describe('> when false is passed', function() {
+    describe('when compressed flag is seassertto true', function() {
+      describe('when false is passed', function() {
         it('should return encoded (noassertcompressed)', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
@@ -86,7 +86,7 @@ describe('Point', function() {
         })
       })
 
-      describe('> when true is passed', function() {
+      describe('when true is passed', function() {
         it('should return encoded (noassertcompressed)', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
@@ -103,8 +103,8 @@ describe('Point', function() {
       })
     })
 
-    describe('> when compressed flag is seassertto false', function() {
-      describe('> when false is passed', function() {
+    describe('when compressed flag is seassertto false', function() {
+      describe('when false is passed', function() {
         it('should return encoded (noassertcompressed)', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
@@ -120,7 +120,7 @@ describe('Point', function() {
         })
       })
 
-      describe('> when true is passed', function() {
+      describe('when true is passed', function() {
         it('should return encoded (noassertcompressed)', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
@@ -137,8 +137,8 @@ describe('Point', function() {
       })
     })
 
-    describe('> when getEncoded() has no parameter', function() {
-      describe('> when compressed flag is seassertto false', function() {
+    describe('when getEncoded has no parameter', function() {
+      describe('when compressed flag is seassertto false', function() {
         it('should return encoded (noassertcompressed)', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
@@ -153,7 +153,7 @@ describe('Point', function() {
         })
       })
 
-      describe('> when compressed flag is seassertto true', function() {
+      describe('when compressed flag is seassertto true', function() {
         it('should return encoded (noassertcompressed)', function() {
           var x = "55066263022277343669578718895168534326250603453777594175500187360389116729240"
           var y = "32670510020758816978083085130507043184471273380659243275938904335757337482424"
@@ -170,7 +170,7 @@ describe('Point', function() {
     })
   })
 
-  describe('- equals()', function() {
+  describe('equals', function() {
     var curve = getCurveByName('secp256k1')
 
     it('should return true when points are equal', function() {
