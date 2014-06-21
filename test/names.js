@@ -2,8 +2,6 @@ var assert = require('assert')
 var ecurve = require('../')
 var getCurveByName = require('../lib/names')
 
-var BigInteger = require('bigi')
-
 var curves = require('../lib/curves')
 
 describe('getCurveByName(curveName)', function() {
