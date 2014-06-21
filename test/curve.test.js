@@ -242,17 +242,21 @@ describe('Ecurve', function() {
         }, /Point is at infinity/)
       })
 
-    // TODO: Test data needed...
-//    it('should not validate P where nP = O', function() {
-//      assert.throws(function() {
-//        curve.validate(Q)
-//      }, /Point is not a scalar multiple of G/)
-//    })
+      it.skip('TODO: should not validate P where nP = O', function() {
+// TODO: Test data needed...
+//        var Q =
+
+        assert.throws(function() {
+          curve.validate(Q)
+        }, /Point is not a scalar multiple of G/)
+      })
     })
   })
 
   describe('pointFromX', function() {
     pointFixtures.valid.forEach(function(f) {
+      if (f.curve === 'secp224r1') return it.skip('TODO: secp224r1, currently not supported')
+
       var curve = getCurveByName(f.curve)
 
       var x = new BigInteger(f.x)

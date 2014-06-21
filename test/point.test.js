@@ -25,6 +25,8 @@ describe('Point', function() {
 
   describe('decodeFrom', function() {
     fixtures.valid.forEach(function(f) {
+      if (f.curve === 'secp224r1') return it.skip('TODO: secp224r1, currently not supported')
+
       it('decodes ' + f.hex + ' for ' + f.curve + ' correctly', function() {
         var curve = getCurveByName(f.curve)
         var buffer = new Buffer(f.hex, 'hex')
