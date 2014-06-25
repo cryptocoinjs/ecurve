@@ -7,7 +7,7 @@
     "crypto",
     "bitcoin",
     "litecoin",
-    "eliptical",
+    "elliptic",
     "curve"
   ],
   "devDependencies": {
