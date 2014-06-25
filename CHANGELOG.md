@@ -2,6 +2,8 @@
 -------------------
 * moved curves to json [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/18)
 * added jshint [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/20)
+* added NIST test vectors [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/commit/a35b1e210e6da46f8823e4044c8862fa58c078d0)
+* added pointFromX() on `Curve` instance [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/commit/91296c13bb1283480335264677458281f8d2a7df)
 
 0.9.0 / 2014-06-12
 ------------------
