@@ -1,3 +1,8 @@
+0.10.0 / 2014-06-25
+-------------------
+* moved curves to json [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/18)
+* added jshint [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/20)
+
 0.9.0 / 2014-06-12
 ------------------
 * broke compatibility, simplified fields on `Curve` class. [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/17)
