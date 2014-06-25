@@ -44,15 +44,6 @@
     "Gx": "188da80eb03090f67cbf20eb43a18800f4ff0afd82ff1012",
     "Gy": "07192b95ffc8da78631011ed6b24cdd573f977a11e794811"
   },
-  "secp224r1": {
-    "p": "ffffffffffffffffffffffffffffffff000000000000000000000001",
-    "a": "fffffffffffffffffffffffffffffffefffffffffffffffffffffffe",
-    "b": "b4050a850c04b3abf54132565044b0b7d7bfd8ba270b39432355ffb4",
-    "n": "ffffffffffffffffffffffffffff16a2e0b8f03e13dd29455c5c2a3d",
-    "h": "01",
-    "Gx": "b70e0cbd6bb4bf7f321390b94a03c1d356c21122343280d6115c1d21",
-    "Gy": "bd376388b5f723fb4c22dfe6cd4375a05a07476444d5819985007e34"
-  },
   "secp256k1": {
     "p": "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
     "a": "00",

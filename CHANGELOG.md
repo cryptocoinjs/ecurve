@@ -1,3 +1,7 @@
+1.0.0 / 2014-06-25
+------------------
+* removed curve `secp224r1` because we're using curve specific optimizations for other curves see [#21](https://github.com/cryptocoinjs/ecurve/issues/21)
+
 0.10.0 / 2014-06-25
 -------------------
 * moved curves to json [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/18)
