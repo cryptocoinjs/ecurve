@@ -1,3 +1,7 @@
+1.0.1 / 2015-02-02
+------------------
+- bugfix using bytelength in Point (https://github.com/cryptocoinjs/ecurve/commit/dd66233dac444e48ba937f1e7a91e568a67a442c)
+
 1.0.0 / 2014-06-25
 ------------------
 * removed curve `secp224r1` because we're using curve specific optimizations for other curves see [#21](https://github.com/cryptocoinjs/ecurve/issues/21)
