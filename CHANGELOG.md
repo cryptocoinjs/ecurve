@@ -19,7 +19,7 @@
 
 0.8.0 / 2014-06-10
 ------------------
-* broke compatiblity, removed `Point` class from `Curve`. [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/16) 
+* broke compatiblity, removed `Point` class from `Curve`. [Daniel Cousens](https://github.com/cryptocoinjs/ecurve/pull/16)
 
 no longer works:
 
@@ -53,7 +53,7 @@ var Point = require('ecurve').Point
 
 0.6.0 / 2014-05-31
 ------------------
-* broke compability to make module exporting more logical, so had to bump minor version. 
+* broke compability to make module exporting more logical, so had to bump minor version.
 
 0.5.0 / 2014-05-31
 ------------------
@@ -94,7 +94,7 @@ var ecparams = ecurve.getECParams('secp256k1')
 
 * renamed result `ecparams` [names.js] object methods `getN()`, `getH()`, `getG()`, and `getCurve()` to properties `n`, `h`, `g`, `curve`. This isn't
 Java. JavaScript has excellent property support through `Object.defineProperty`.
-* renamed `ECCurveFp` methods `getQ()`, `getA()`, and `getB()` to properties. See justfication in previous change. 
+* renamed `ECCurveFp` methods `getQ()`, `getA()`, and `getB()` to properties. See justfication in previous change.
 
 0.4.0 / 2014-05-29
 ------------------
@@ -104,7 +104,7 @@ Java. JavaScript has excellent property support through `Object.defineProperty`.
 * moved `ECPointFp` to `point.js`
 * moved `ECCurveFp` to `curve.js`
 * upgraded `bigi@0.2.x` to `bigi@^1.1.0`
-* added travis-ci and coveralls support 
+* added travis-ci and coveralls support
 
 0.3.2 / 2014-04-14
 ------------------
@@ -122,11 +122,11 @@ Java. JavaScript has excellent property support through `Object.defineProperty`.
 
 0.2.0 / 2013-12-08
 ------------------
-* changed dep to `bigi` 
+* changed dep to `bigi`
 
 0.1.0 / 2013-11-20
 ------------------
-* changed package name 
+* changed package name
 * removed AMD support
 
 0.0.1 / 2013-11-06
