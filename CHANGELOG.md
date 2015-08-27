@@ -1,3 +1,8 @@
+1.0.2 / 2015-08-27
+------------------
+- add license field
+- small cleanup in Point: https://github.com/cryptocoinjs/ecurve/pull/24
+
 1.0.1 / 2015-02-02
 ------------------
 - bugfix using bytelength in Point (https://github.com/cryptocoinjs/ecurve/commit/dd66233dac444e48ba937f1e7a91e568a67a442c)
