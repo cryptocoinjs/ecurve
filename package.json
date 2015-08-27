@@ -10,6 +10,7 @@
     "elliptic",
     "curve"
   ],
+  "license": "MIT",
   "devDependencies": {
     "coveralls": "^2.10.0",
     "istanbul": "^0.2.10",
