@@ -33,17 +33,5 @@
   },
   "dependencies": {
     "bigi": "^1.1.0"
-  },
-  "testling": {
-    "harness": "mocha",
-    "files": "test/*.js",
-    "browsers": [
-      "ie/9..latest",
-      "chrome/latest",
-      "safari/6..latest",
-      "firefox/latest",
-      "iphone/6..latest",
-      "android-browser/4.2..latest"
-    ]
   }
 }
