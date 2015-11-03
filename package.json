@@ -17,7 +17,8 @@
     "jshint": "2.5.1",
     "mocha": "^1.20.0",
     "mocha-lcov-reporter": "0.0.1",
-    "mochify": "^0.4.2"
+    "mochify": "^0.4.2",
+    "standard": "^5.3.1"
   },
   "repository": {
     "url": "https://github.com/cryptocoinjs/ecurve",
@@ -28,6 +29,7 @@
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --reporter list test/*.js",
     "coveralls": "npm run-script coverage && node ./node_modules/.bin/coveralls < coverage/lcov.info",
     "jshint": "./node_modules/.bin/jshint --config jshint.json lib/*.js ; true",
+    "standard": "standard",
     "test": "mocha --ui bdd",
     "unit": "./node_modules/.bin/mocha"
   },

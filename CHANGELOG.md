@@ -1,6 +1,7 @@
 1.x.y / 2015-xx-yy
 ------------------
 - removed testling
+- JavaScript Standard Style
 
 1.0.2 / 2015-08-27
 ------------------

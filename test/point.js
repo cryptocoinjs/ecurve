@@ -1,4 +1,4 @@
-var assert= require('assert')
+var assert = require('assert')
 var ecurve = require('../')
 var getCurveByName = ecurve.getCurveByName
 
@@ -7,10 +7,12 @@ var Point = ecurve.Point
 
 var fixtures = require('./fixtures/point')
 
-describe('Point', function() {
-  describe('multiply', function() {
-    fixtures.valid.forEach(function(f) {
-      it('gives (' + f.x + ', ' + f.y + ') for ' + f.d + ' on ' + f.curve, function() {
+/* global describe it */
+
+describe('Point', function () {
+  describe('multiply', function () {
+    fixtures.valid.forEach(function (f) {
+      it('gives (' + f.x + ', ' + f.y + ') for ' + f.d + ' on ' + f.curve, function () {
         var curve = getCurveByName(f.curve)
 
         var d = new BigInteger(f.d)
@@ -22,9 +24,9 @@ describe('Point', function() {
     })
   })
 
-  describe('decodeFrom', function() {
-    fixtures.valid.forEach(function(f) {
-      it('decodes ' + f.hex + ' for ' + f.curve + ' correctly', function() {
+  describe('decodeFrom', function () {
+    fixtures.valid.forEach(function (f) {
+      it('decodes ' + f.hex + ' for ' + f.curve + ' correctly', function () {
         var curve = getCurveByName(f.curve)
         var buffer = new Buffer(f.hex, 'hex')
 
@@ -35,20 +37,20 @@ describe('Point', function() {
       })
     })
 
-    fixtures.invalid.forEach(function(f) {
-      it('throws on ' + f.description, function() {
+    fixtures.invalid.forEach(function (f) {
+      it('throws on ' + f.description, function () {
         var curve = getCurveByName('secp256k1')
         var buffer = new Buffer(f.hex, 'hex')
 
-        assert.throws(function() {
+        assert.throws(function () {
           Point.decodeFrom(curve, buffer)
         }, new RegExp(f.exception))
       })
     })
   })
 
-  describe('getEncoded', function() {
-    it('compression defaults to Point field flag', function() {
+  describe('getEncoded', function () {
+    it('compression defaults to Point field flag', function () {
       var curve = getCurveByName('secp128r1')
 
       var d = new BigInteger('1')
@@ -59,8 +61,8 @@ describe('Point', function() {
       assert.equal(Q.getEncoded().toString('hex'), '04161ff7528b899b2d0c28607ca52c5b86cf5ac8395bafeb13c02da292dded7a83')
     })
 
-    fixtures.valid.forEach(function(f) {
-      it('encodes ' + f.hex + ' on ' + f.curve + ' correctly', function() {
+    fixtures.valid.forEach(function (f) {
+      it('encodes ' + f.hex + ' on ' + f.curve + ' correctly', function () {
         var curve = getCurveByName(f.curve)
         var Q = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
 
@@ -70,8 +72,8 @@ describe('Point', function() {
     })
   })
 
-  describe('equals', function() {
-    describe('secp256k1', function() {
+  describe('equals', function () {
+    describe('secp256k1', function () {
       var curve = getCurveByName('secp256k1')
 
       var d1 = new BigInteger('5')
@@ -80,7 +82,7 @@ describe('Point', function() {
       var Q1 = curve.G.multiply(d1)
       var Q2 = curve.G.multiply(d2)
 
-      it('should return true when points are equal', function() {
+      it('should return true when points are equal', function () {
         var Q1b = Q2.add(curve.G.negate()) // d +1
         var Q2b = Q1.add(curve.G) // d -1
 
@@ -88,7 +90,7 @@ describe('Point', function() {
         assert(Q2.equals(Q2b))
       })
 
-      it('should return false when points are not equal', function() {
+      it('should return false when points are not equal', function () {
         assert(!Q1.equals(Q2))
         assert(!Q2.equals(Q1))
       })
