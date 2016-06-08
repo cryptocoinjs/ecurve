@@ -1,7 +1,8 @@
-1.x.y / 2015-xx-yy
+1.0.3 / 2016-06-08
 ------------------
 - removed testling
 - JavaScript Standard Style
+- fixed for Webpack
 
 1.0.2 / 2015-08-27
 ------------------
