@@ -26,6 +26,7 @@
     "unit": "mocha --ui bdd"
   },
   "dependencies": {
-    "bigi": "^1.1.0"
+    "bigi": "^1.1.0",
+    "safe-buffer": "^5.0.1"
   }
 }
