@@ -2,7 +2,7 @@ var assert = require('assert')
 var ecurve = require('../')
 var getCurveByName = ecurve.getCurveByName
 
-var BigInteger = require('bigi')
+var BN = require('bn.js')
 
 var fixtures = require('./fixtures/nist')
 
@@ -19,12 +19,12 @@ describe('NIST Vectors', function () {
         var vector = fixtures[curveParams]
 
         vector.forEach(function (v) {
-          it('derives Q for ' + v.d + ' correctly', function () {
-            var d = new BigInteger(v.d, 16)
+          it('derives Q for ' + v.d, function () {
+            var d = new BN(v.d, 16)
             var Q = curve.G.multiply(d)
 
-            assert.equal(Q.affineX.toHex(), v.Qx)
-            assert.equal(Q.affineY.toHex(), v.Qy)
+            assert.equal(Q.affineX.toString(16, 2), v.Qx)
+            assert.equal(Q.affineY.toString(16, 2), v.Qy)
           })
         })
       })

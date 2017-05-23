@@ -3,7 +3,7 @@ var ecurve = require('../')
 var getCurveByName = ecurve.getCurveByName
 
 var Buffer = require('safe-buffer').Buffer
-var BigInteger = require('bigi')
+var BN = require('bn.js')
 var Point = ecurve.Point
 
 var fixtures = require('./fixtures/point')
@@ -16,7 +16,7 @@ describe('Point', function () {
       it('gives (' + f.x + ', ' + f.y + ') for ' + f.d + ' on ' + f.curve, function () {
         var curve = getCurveByName(f.curve)
 
-        var d = new BigInteger(f.d)
+        var d = new BN(f.d)
         var Q = curve.G.multiply(d)
 
         assert.equal(Q.affineX.toString(), f.x)
@@ -27,7 +27,7 @@ describe('Point', function () {
 
   describe('decodeFrom', function () {
     fixtures.valid.forEach(function (f) {
-      it('decodes ' + f.hex + ' for ' + f.curve + ' correctly', function () {
+      it('decodes ' + f.hex + ' for ' + f.curve, function () {
         var curve = getCurveByName(f.curve)
         var buffer = Buffer.from(f.hex, 'hex')
 
@@ -54,7 +54,7 @@ describe('Point', function () {
     it('compression defaults to Point field flag', function () {
       var curve = getCurveByName('secp128r1')
 
-      var d = new BigInteger('1')
+      var d = new BN(1)
       var Q = curve.G.multiply(d)
 
       assert.equal(Q.getEncoded().toString('hex'), '03161ff7528b899b2d0c28607ca52c5b86')
@@ -63,9 +63,9 @@ describe('Point', function () {
     })
 
     fixtures.valid.forEach(function (f) {
-      it('encodes ' + f.hex + ' on ' + f.curve + ' correctly', function () {
+      it('encodes ' + f.hex + ' on ' + f.curve, function () {
         var curve = getCurveByName(f.curve)
-        var Q = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
+        var Q = Point.fromAffine(curve, new BN(f.x), new BN(f.y))
 
         var encoded = Q.getEncoded(f.compressed)
         assert.equal(encoded.toString('hex'), f.hex)
@@ -77,8 +77,8 @@ describe('Point', function () {
     describe('secp256k1', function () {
       var curve = getCurveByName('secp256k1')
 
-      var d1 = new BigInteger('5')
-      var d2 = new BigInteger('6')
+      var d1 = new BN(5)
+      var d2 = new BN(6)
 
       var Q1 = curve.G.multiply(d1)
       var Q2 = curve.G.multiply(d2)
