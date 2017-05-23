@@ -20,6 +20,9 @@
     "type": "git"
   },
   "main": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "lint": "standard",
     "test": "npm run lint && npm run unit",
