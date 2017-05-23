@@ -100,6 +100,7 @@ describe('Ecurve', function () {
     var b = points[7]
     var z = points[0]
     var y = Point.fromAffine(curve, new BN(1), new BN(1))
+    var o = new Point(curve, new BN(1).toRed(curve.red), new BN(1).toRed(curve.red), new BN(0).toRed(curve.red))
 
     it('should validate field elements properly', function () {
       assert.ok(curve.validate(a))
@@ -109,6 +110,7 @@ describe('Ecurve', function () {
       assert.ok(!curve.isOnCurve(y))
       assert.ok(!curve.isInfinity(a))
       assert.ok(!curve.isInfinity(b))
+      assert.ok(curve.isInfinity(o))
       assert.ok(curve.isInfinity(inf))
       assert.ok(curve.isOnCurve(inf))
     })
