@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "benchmark": "^2.1.4",
-    "ecurve": "^1.0.5"
+    "ecurve": "^1.0.5",
+    "elliptic": "^6.4.0"
   }
 }
