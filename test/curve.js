@@ -2,7 +2,7 @@ var assert = require('assert')
 var ecurve = require('../')
 var getCurveByName = ecurve.getCurveByName
 
-var BigInteger = require('bigi')
+var BN = require('bn.js')
 var Curve = ecurve.Curve
 var Point = ecurve.Point
 
@@ -13,31 +13,31 @@ var pointFixtures = require('./fixtures/point')
 
 describe('Ecurve', function () {
   it('should create curve objects', function () {
-    var p = new BigInteger('11')
-    var a = new BigInteger('22')
-    var b = new BigInteger('33')
-    var Gx = new BigInteger('44')
-    var Gy = new BigInteger('55')
-    var n = new BigInteger('66')
-    var h = new BigInteger('77')
+    var p = new BN('11')
+    var a = new BN('22')
+    var b = new BN('33')
+    var Gx = new BN('44')
+    var Gy = new BN('55')
+    var n = new BN('66')
+    var h = new BN('77')
 
     var curve = new Curve(p, a, b, Gx, Gy, n, h)
-    assert(curve.p.equals(p))
-    assert(curve.a.equals(a))
-    assert(curve.b.equals(b))
+    assert(curve.p.eq(p))
+    assert(curve.a.toJSON(), a.toJSON())
+    assert(curve.b.toJSON(), b.toJSON())
 
     assert(curve.G.equals(Point.fromAffine(curve, Gx, Gy)))
-    assert(curve.n.equals(n))
-    assert(curve.h.equals(h))
-    assert(curve.a.equals(a))
-    assert(curve.b.equals(b))
+    assert(curve.n.toJSON(), n.toJSON())
+    assert(curve.h.toJSON(), h.toJSON())
+    assert(curve.a.toJSON(), a.toJSON())
+    assert(curve.b.toJSON(), b.toJSON())
   })
 
   fixtures.valid.forEach(function (f) {
     it('calculates a public point for ' + f.d, function () {
       var curve = ecurve.getCurveByName(f.Q.curve)
 
-      var d = new BigInteger(f.d)
+      var d = new BN(f.d)
       var Q = curve.G.multiply(d)
 
       assert.ok(Q.affineX.toString(), f.Q.x)
@@ -68,10 +68,10 @@ describe('Ecurve', function () {
     //    0 1  2  3  4  5  6  7  8  9 10
     // /////////////////////////////////////////////
 
-    var Gx = new BigInteger('8')
-    var Gy = new BigInteger('6')
-    var n = new BigInteger('12')
-    var curve = new Curve(new BigInteger('11'), BigInteger.ONE, BigInteger.ZERO, Gx, Gy, n, undefined)
+    var Gx = new BN('8')
+    var Gy = new BN('6')
+    var n = new BN('12')
+    var curve = new Curve(new BN('11'), new BN(1), new BN(0), Gx, Gy, n, undefined)
     var points = [
       { x: 0, y: 0 },
       { x: 5, y: 8 }, { x: 5, y: 3 },
@@ -80,7 +80,7 @@ describe('Ecurve', function () {
       { x: 9, y: 10 }, { x: 9, y: 1 },
       { x: 10, y: 8 }, { x: 10, y: 3 }
     ].map(function (p) {
-      return Point.fromAffine(curve, BigInteger.valueOf(p.x), BigInteger.valueOf(p.y))
+      return Point.fromAffine(curve, new BN(p.x), new BN(p.y))
     })
 
     it('pG = P = -P', function () {
@@ -99,7 +99,8 @@ describe('Ecurve', function () {
     var a = points[2]
     var b = points[7]
     var z = points[0]
-    var y = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
+    var y = Point.fromAffine(curve, new BN(1), new BN(1))
+    var o = new Point(curve, new BN(1).toRed(curve.red), new BN(1).toRed(curve.red), new BN(0).toRed(curve.red))
 
     it('should validate field elements properly', function () {
       assert.ok(curve.validate(a))
@@ -109,6 +110,7 @@ describe('Ecurve', function () {
       assert.ok(!curve.isOnCurve(y))
       assert.ok(!curve.isInfinity(a))
       assert.ok(!curve.isInfinity(b))
+      assert.ok(curve.isInfinity(o))
       assert.ok(curve.isInfinity(inf))
       assert.ok(curve.isOnCurve(inf))
     })
@@ -131,37 +133,37 @@ describe('Ecurve', function () {
     })
 
     it('should multiply field elements properly', function () {
-      assert.equal(a.multiply(new BigInteger('2')).toString(), '(5,8)') // (5,3) x 2 = (5,8)
-      assert.equal(a.multiply(new BigInteger('3')).toString(), '(INFINITY)') // (5,3) x 3 = INFINITY
-      assert.equal(a.multiply(new BigInteger('4')).toString(), '(5,3)') // (5,3) x 4 = (5,3)
-      assert.equal(a.multiply(new BigInteger('5')).toString(), '(5,8)') // (5,3) x 5 = (5,8)
+      assert.equal(a.multiply(new BN('2')).toString(), '(5,8)') // (5,3) x 2 = (5,8)
+      assert.equal(a.multiply(new BN('3')).toString(), '(INFINITY)') // (5,3) x 3 = INFINITY
+      assert.equal(a.multiply(new BN('4')).toString(), '(5,3)') // (5,3) x 4 = (5,3)
+      assert.equal(a.multiply(new BN('5')).toString(), '(5,8)') // (5,3) x 5 = (5,8)
 
-      assert.equal(b.multiply(new BigInteger('2')).toString(), '(5,8)') // (9,10) x 2 = (5,8)
-      assert.equal(b.multiply(new BigInteger('3')).toString(), '(0,0)') // (9,10) x 3 = (0,0)
-      assert.equal(b.multiply(new BigInteger('4')).toString(), '(5,3)') // (9,10) x 4 = (5,3)
-      assert.equal(b.multiply(new BigInteger('5')).toString(), '(9,1)') // (9,10) x 5 = (9,1)
+      assert.equal(b.multiply(new BN('2')).toString(), '(5,8)') // (9,10) x 2 = (5,8)
+      assert.equal(b.multiply(new BN('3')).toString(), '(0,0)') // (9,10) x 3 = (0,0)
+      assert.equal(b.multiply(new BN('4')).toString(), '(5,3)') // (9,10) x 4 = (5,3)
+      assert.equal(b.multiply(new BN('5')).toString(), '(9,1)') // (9,10) x 5 = (9,1)
 
-      assert.equal(inf.multiply(new BigInteger('2')).toString(), '(INFINITY)') // INFINITY x 2 = INFINITY
-      assert.equal(inf.multiply(new BigInteger('3')).toString(), '(INFINITY)') // INFINITY x 3 = INFINITY
-      assert.equal(inf.multiply(new BigInteger('4')).toString(), '(INFINITY)') // INFINITY x 4 = INFINITY
-      assert.equal(inf.multiply(new BigInteger('5')).toString(), '(INFINITY)') // INFINITY x 5 = INFINITY
+      assert.equal(inf.multiply(new BN('2')).toString(), '(INFINITY)') // INFINITY x 2 = INFINITY
+      assert.equal(inf.multiply(new BN('3')).toString(), '(INFINITY)') // INFINITY x 3 = INFINITY
+      assert.equal(inf.multiply(new BN('4')).toString(), '(INFINITY)') // INFINITY x 4 = INFINITY
+      assert.equal(inf.multiply(new BN('5')).toString(), '(INFINITY)') // INFINITY x 5 = INFINITY
 
-      assert.equal(z.multiply(new BigInteger('2')).toString(), '(INFINITY)') // (0,0) x 2 = INFINITY
-      assert.equal(z.multiply(new BigInteger('3')).toString(), '(0,0)') // (0,0) x 3 = (0,0)
-      assert.equal(z.multiply(new BigInteger('4')).toString(), '(INFINITY)') // (0,0) x 4 = INFINITY
-      assert.equal(z.multiply(new BigInteger('5')).toString(), '(0,0)') // (0,0) x 5 = (0,0)
+      assert.equal(z.multiply(new BN('2')).toString(), '(INFINITY)') // (0,0) x 2 = INFINITY
+      assert.equal(z.multiply(new BN('3')).toString(), '(0,0)') // (0,0) x 3 = (0,0)
+      assert.equal(z.multiply(new BN('4')).toString(), '(INFINITY)') // (0,0) x 4 = INFINITY
+      assert.equal(z.multiply(new BN('5')).toString(), '(0,0)') // (0,0) x 5 = (0,0)
 
-      assert.equal(a.multiplyTwo(new BigInteger('4'), b, new BigInteger('4')).toString(), '(5,8)') // (5,3) x 4 + (9,10) x 4 = (5,8)
+      assert.equal(a.multiplyTwo(new BN('4'), b, new BN('4')).toString(), '(5,8)') // (5,3) x 4 + (9,10) x 4 = (5,8)
 
-      assert.equal(a.multiply(new BigInteger('2')).toString(), a.twice().toString()) // .multiply(2) == .twice()
-      assert.equal(b.multiply(new BigInteger('2')).toString(), b.twice().toString())
-      assert.equal(inf.multiply(new BigInteger('2')).toString(), inf.twice().toString())
-      assert.equal(z.multiply(new BigInteger('2')).toString(), z.twice().toString())
+      assert.equal(a.multiply(new BN('2')).toString(), a.twice().toString()) // .multiply(2) == .twice()
+      assert.equal(b.multiply(new BN('2')).toString(), b.twice().toString())
+      assert.equal(inf.multiply(new BN('2')).toString(), inf.twice().toString())
+      assert.equal(z.multiply(new BN('2')).toString(), z.twice().toString())
 
-      assert.equal(a.multiply(new BigInteger('2')).toString(), a.add(a).toString()) // this.multiply(2) == this.add(this)
-      assert.equal(b.multiply(new BigInteger('2')).toString(), b.add(b).toString())
-      assert.equal(inf.multiply(new BigInteger('2')).toString(), inf.add(inf).toString())
-      assert.equal(z.multiply(new BigInteger('2')).toString(), z.add(z).toString())
+      assert.equal(a.multiply(new BN('2')).toString(), a.add(a).toString()) // this.multiply(2) == this.add(this)
+      assert.equal(b.multiply(new BN('2')).toString(), b.add(b).toString())
+      assert.equal(inf.multiply(new BN('2')).toString(), inf.add(inf).toString())
+      assert.equal(z.multiply(new BN('2')).toString(), z.add(z).toString())
     })
   })
 
@@ -169,7 +171,7 @@ describe('Ecurve', function () {
     pointFixtures.valid.forEach(function (f) {
       it('should return true for (' + f.x + ', ' + f.y + ') on ' + f.curve, function () {
         var curve = getCurveByName(f.curve)
-        var P = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
+        var P = Point.fromAffine(curve, new BN(f.x), new BN(f.y))
 
         assert.ok(curve.isOnCurve(P))
       })
@@ -179,34 +181,34 @@ describe('Ecurve', function () {
       var curve = getCurveByName('secp256k1')
 
       it('should return true for a point on the curve', function () {
-        var d = BigInteger.ONE
+        var d = new BN(1)
         var Q = curve.G.multiply(d)
         assert.ok(curve.isOnCurve(Q))
       })
 
       it('should return false for points not in the finite field', function () {
-        var P = Point.fromAffine(curve, curve.p.add(BigInteger.ONE), BigInteger.ZERO)
+        var P = Point.fromAffine(curve, curve.p.add(new BN(1)), new BN(0))
         assert(!curve.isOnCurve(P))
       })
 
       it('should return false for a point not on the curve', function () {
-        var P = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
+        var P = Point.fromAffine(curve, new BN(1), new BN(1))
         assert(!curve.isOnCurve(P))
       })
     })
 
     it('should return true for points at (0, 0) if they are on the curve', function () {
       var curve = new Curve(
-        new BigInteger('11'),
-        BigInteger.ONE,
-        BigInteger.ZERO,
-        new BigInteger('8'),
-        new BigInteger('6'),
-        new BigInteger('12'),
+        new BN('11'),
+        new BN(1),
+        new BN(0),
+        new BN('8'),
+        new BN('6'),
+        new BN('12'),
         undefined
       )
 
-      var P = Point.fromAffine(curve, BigInteger.ZERO, BigInteger.ZERO)
+      var P = Point.fromAffine(curve, new BN(0), new BN(0))
       assert.ok(curve.isOnCurve(P))
     })
   })
@@ -215,7 +217,7 @@ describe('Ecurve', function () {
     pointFixtures.valid.forEach(function (f) {
       it('should return true for (' + f.x + ', ' + f.y + ') on ' + f.curve, function () {
         var curve = getCurveByName(f.curve)
-        var P = Point.fromAffine(curve, new BigInteger(f.x), new BigInteger(f.y))
+        var P = Point.fromAffine(curve, new BN(f.x), new BN(f.y))
 
         assert.ok(curve.validate(P))
       })
@@ -225,14 +227,14 @@ describe('Ecurve', function () {
       var curve = getCurveByName('secp256k1')
 
       it('should validate P where y^2 == x^3 + ax + b (mod p)', function () {
-        var d = BigInteger.ONE
+        var d = new BN(1)
         var Q = curve.G.multiply(d)
 
         assert.ok(curve.validate(Q))
       })
 
       it('should not validate P where y^2 != x^3 + ax + b (mod p)', function () {
-        var P = Point.fromAffine(curve, BigInteger.ONE, BigInteger.ONE)
+        var P = Point.fromAffine(curve, new BN(1), new BN(1))
 
         assert.throws(function () {
           curve.validate(P)
@@ -262,10 +264,10 @@ describe('Ecurve', function () {
 
       var curve = getCurveByName(f.curve)
 
-      var x = new BigInteger(f.x)
-      var odd = !(new BigInteger(f.y).isEven())
+      var x = new BN(f.x)
+      var odd = !(new BN(f.y).isEven())
 
-      it('derives Y coordinate ' + f.y + ' for curve ' + f.curve + ' correctly', function () {
+      it('derives Y coordinate ' + f.y + ' for curve ' + f.curve, function () {
         var actual = curve.pointFromX(odd, x)
 
         assert.equal(actual.affineX.toString(), f.x)

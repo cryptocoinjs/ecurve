@@ -20,13 +20,16 @@
     "type": "git"
   },
   "main": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "lint": "standard",
     "test": "npm run lint && npm run unit",
     "unit": "mocha --ui bdd"
   },
   "dependencies": {
-    "bigi": "^1.1.0",
+    "bn.js": "^4.11.6",
     "safe-buffer": "^5.0.1"
   }
 }
