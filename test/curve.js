@@ -251,7 +251,7 @@ describe('Ecurve', function () {
 
         /* assert.throws(function () {
           curve.validate(Q)
-        }, /Point is not a scalar multiple of G/)*/
+        }, /Point is not a scalar multiple of G/) */
       })
     })
   })
